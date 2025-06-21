@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Baby Tiro</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #23242a;
+    }
+    #splash {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #15181f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.8s;
+    }
+    .tiro-svg-container {
+      position: relative;
+      width: 60vw;
+      max-width: 900px;
+      margin: 0 auto;
+      min-width: 320px;
+    }
+    .water-fill-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .tiro-id {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: -52px;
+      width: 100%;
+      text-align: center;
+      font-family: 'Arial Black', Impact, sans-serif;
+      font-size: 56px;
+      font-weight: bold;
+      color: #b2c3cf;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 6px #09253490, 0 0 2px #1ef0ff80, 0 1px 0 #fff2;
+      opacity: 0.56;
+      pointer-events: none;
+      animation: idfloat 2.6s ease-in-out infinite alternate;
+      filter: blur(0.2px);
+      user-select: none;
+    }
+    @keyframes idfloat {
+      from { transform: translateY(0px) scale(1);}
+      to { transform: translateY(10px) scale(1.04);}
+    }
+    /* --- rest of your profile card styles --- */
+    #main-content {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      background: #23242a;
+    }
+    .centered {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .browser-window {
+      width: 410px;
+      background: #23242a;
+      border-radius: 18px;
+      box-shadow: 0 8px 40px #0008;
+      overflow: hidden;
+      border: 1px solid #333;
+      margin: 0 auto;
+      position: relative;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      animation: fadeInMain 1s;
+      display: flex;
+      flex-direction: column;
+      min-height: 510px;
+    }
+    .browser-titlebar {
+      background: #23242a;
+      padding: 9px 0 7px 13px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #36393f;
+      height: 33px;
+      position: relative;
+    }
+    .window-controls {
+      display: flex;
+      gap: 6px;
+      margin-right: 12px;
+    }
+    .window-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      background: #f55;
+      box-shadow: 18px 0 0 #fc5, 36px 0 0 #6f6;
+    }
+    .browser-title {
+      font-size: 15px;
+      color: #aaa;
+      letter-spacing: .1em;
+      margin-left: 38px;
+      font-weight: 500;
+      user-select: none;
+    }
+    .banner {
+      width: 100%; height: 110px;
+      background: url('https://xatimg.com/image/ypzmoS3yOjcU.gif') center/cover no-repeat;
+      position: relative;
+    }
+    .avatar-container {
+      position: absolute;
+      left: 26px; top: 65px;
+      z-index: 5;
+      width: 86px; height: 86px;
+      border-radius: 50%;
+      border: 6px solid #23242a;
+      background: #23242a;
+      overflow: hidden;
+      box-shadow: 0 2px 14px #0009;
+      transition: border-color 0.4s, box-shadow 0.4s;
+    }
+    .avatar-container img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: opacity 0.3s;
+      background: #222;
+    }
+    .avatar-online {
+      border-color: #2bf45f !important;
+      box-shadow: 0 0 18px 2px #36fa60b0, 0 2px 14px #0009;
+    }
+    .avatar-offline {
+      border-color: #ed3942 !important;
+      box-shadow: 0 0 18px 2px #ed3942b0, 0 2px 14px #0009;
+    }
+    .profile-content {
+      padding: 58px 24px 20px 24px;
+      color: #fff;
+      flex: 1 1 auto;
+    }
+    .profile-name {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      color: #ff7474;
+      text-shadow: 0 0 10px #fd8383, 0 1px 0 #fff2;
+      text-align: left;
+      margin-bottom: 1px;
+    }
+    .profile-username {
+      color: #aaa;
+      font-size: 1.05rem;
+      margin-bottom: 15px;
+    }
+    .profile-description {
+      background: #232530;
+      border-radius: 8px;
+      margin-top: 20px;
+      padding: 15px 13px 12px 13px;
+      color: #bbb;
+      font-size: 1rem;
+      min-height: 35px;
+      box-shadow: 0 1px 10px #0001;
+      margin-bottom: 10px;
+    }
+    .profile-footer {
+      width: 100%;
+      background: #212226;
+      border-top: 1px solid #292b30;
+      color: #b8b8b8;
+      font-size: 0.92rem;
+      text-align: center;
+      padding: 9px 13px 6px 13px;
+      letter-spacing: 0.01em;
+      min-height: 25px;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .footer-friends {
+      margin-top: 5px;
+      font-size: 1.25em;
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      user-select: text;
+      flex-wrap: wrap;
+    }
+    .footer-friends a {
+      text-decoration: none;
+      filter: grayscale(0.2) brightness(1.5);
+      transition: filter 0.14s, transform 0.16s;
+      font-size: 1.3em;
+      will-change: filter, transform;
+    }
+    .footer-friends a:hover {
+      filter: grayscale(0) brightness(2) drop-shadow(0 0 2px #39ff63b9);
+      transform: scale(1.17) rotate(-7deg);
+      text-decoration: none;
+    }
+    @media (max-width: 500px) {
+      .browser-window { width: 98vw; }
+      .profile-content { padding: 55px 6vw 20px 6vw;}
+      .tiro-svg-container { width: 98vw; min-width: 0; }
+      .tiro-id { font-size: 7vw; bottom: -36px;}
+    }
+    /* Nick <3 background text */
+    .easter-egg {
+      position: fixed;
+      z-index: 0;
+      color: #b7bac3;
+      opacity: 0.18;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      transform: rotate(-45deg);
+      pointer-events: none;
+      user-select: none;
+      left: 55vw;
+      top: 50vh;
+      transition: left 1.8s cubic-bezier(.77,0,.18,1), top 1.8s cubic-bezier(.77,0,.18,1);
+    }
+  </style>
+</head>
+<body>
+  <!-- TIRO Water Fill Splash -->
+  <div id="splash">
+    <div class="tiro-svg-container">
+      <svg class="water-fill-svg" viewBox="0 0 900 300">
+        <defs>
+          <mask id="text-mask">
+            <text x="50%" y="60%" text-anchor="middle" font-size="220"
+                  font-family="Arial Black, Impact, sans-serif" font-weight="bold" fill="#fff">
+              TIRO
+            </text>
+          </mask>
+          <linearGradient id="waveGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#19e3ff"/>
+            <stop offset="100%" stop-color="#1551c6"/>
+          </linearGradient>
+        </defs>
+        <text x="50%" y="60%" text-anchor="middle" font-size="220"
+              font-family="Arial Black, Impact, sans-serif" font-weight="bold"
+              fill="#222" opacity="0.25" dy="18">TIRO</text>
+        <g mask="url(#text-mask)">
+          <g id="waveGroup">
+            <path id="wave" fill="url(#waveGradient)"/>
+          </g>
+        </g>
+        <text x="50%" y="60%" text-anchor="middle" font-size="220"
+              font-family="Arial Black, Impact, sans-serif" font-weight="bold"
+              fill="none" stroke="#fff" stroke-width="7">TIRO</text>
+      </svg>
+      <div class="tiro-id">221192</div>
+    </div>
+  </div>
+  <!-- Profile Card as Browser Window -->
+  <div id="main-content">
+    <div class="centered">
+      <div class="browser-window">
+        <div class="browser-titlebar">
+          <div class="window-controls">
+            <span class="window-dot"></span>
+          </div>
+          <span class="browser-title">Xat - @Tiro</span>
+        </div>
+        <div class="banner">
+          <div class="avatar-container" id="avatar-container">
+            <img id="avatar-img" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Avatar" style="background: #222;">
+          </div>
+        </div>
+        <div class="profile-content">
+          <div class="profile-name">Goofy</div>
+          <div class="profile-username">@Tiro</div>
+          <div class="profile-description">
+            Procrastination is just advanced scheduling for tomorrow.
+          </div>
+        </div>
+        <div class="profile-footer">
+          <div style="font-size:0.96em; color: #b5b5b5;">
+            Wudup yung blood?
+          </div>
+          <div class="footer-friends">
+            <a href="https://xat.me/MathiasTRW" target="_blank" title="MathiasTRW">&#x1F911;</a>
+            <a href="https://xat.me/Royalty" target="_blank" title="Leia">&#x1F911;</a>
+            <a href="https://xat.me/chica" target="_blank" title="Chica">&#x1F911;</a>
+            <a href="https://xat.me/Chaii" target="_blank" title="Chaii">&#x1F911;</a>
+            <a href="https://xat.me/NichoLas" target="_blank" title="Nick">&#x1F911;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Subtle moving Nick <3 -->
+  <div class="easter-egg" id="egg">Nick &lt;3</div>
+  <script>
+    // Water fill animation
+    const duration = 2.8;
+    const waveAmplitude = 24;
+    const waveLength = 240;
+    const waveSpeed = 2;
+    const fillStart = 290;
+    const fillEnd = -20;
+    const wavePath = document.getElementById("wave");
+    const svgWidth = 900, svgHeight = 300;
+    let startTime = null;
+
+    function animateWave(ts) {
+      if (!startTime) startTime = ts;
+      const elapsed = (ts - startTime) / 1000;
+      let percent = Math.min(elapsed / duration, 1);
+      let currentAmplitude = waveAmplitude * (1 - percent * 0.8);
+      const fillY = fillStart - (fillStart - fillEnd) * percent;
+      const offsetX = waveSpeed * elapsed * 80;
+      let path = `M0,${svgHeight} L0,${fillY}`;
+      for (let x = 0; x <= svgWidth; x += 10) {
+        let y = fillY + Math.sin((x / waveLength) * 2 * Math.PI + offsetX) * currentAmplitude;
+        path += ` L${x},${y}`;
+      }
+      path += ` L${svgWidth},${svgHeight} Z`;
+      wavePath.setAttribute('d', path);
+
+      if (percent < 1) {
+        requestAnimationFrame(animateWave);
+      } else {
+        setTimeout(() => {
+          document.getElementById('splash').style.opacity = 0;
+          setTimeout(() => {
+            document.getElementById('splash').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.body.style.overflow = "auto";
+          }, 800);
+        }, 400);
+      }
+    }
+    requestAnimationFrame(animateWave);
+
+    // Online/Offline Border & Avatar Script (your latest logic)
+    function updateProfileFromAPI(data) {
+      const avatar = document.getElementById('avatar-container');
+      const avatarImg = document.getElementById('avatar-img');
+      avatar.classList.remove('avatar-online', 'avatar-offline');
+      if (data.is_online) avatar.classList.add('avatar-online');
+      else avatar.classList.add('avatar-offline');
+
+      if (data.avatar) {
+        const parts = data.avatar.split('#');
+        let realUrl = "";
+        // If it's a number, use xat avatar; otherwise use as image URL
+        if (/^\d+$/.test(parts[0])) {
+          realUrl = `https://xat.com/web_gear/chat/av/${parts[0]}.png`;
+        } else if (parts[0].startsWith('http')) {
+          realUrl = parts[0];
+        } else {
+          realUrl = "https://xat.com/web_gear/chat/av/0.png";
+        }
+        avatarImg.src = "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif";
+        const img = new Image();
+        img.onload = () => { avatarImg.src = realUrl; };
+        img.onerror = () => { avatarImg.src = "https://xat.com/web_gear/chat/av/0.png"; };
+        img.src = realUrl;
+      }
+    }
+    function fetchProfile() {
+      fetch('https://pythbots.com/api/userinfo.php?user=goofy')
+        .then(r => r.json())
+        .then(updateProfileFromAPI)
+        .catch(() => {
+          const avatar = document.getElementById('avatar-container');
+          avatar.classList.remove('avatar-online');
+          avatar.classList.add('avatar-offline');
+        });
+    }
+    setTimeout(() => {
+      fetchProfile();
+      setInterval(fetchProfile, 30000);
+    }, 4000);
+
+    // Floating “Nick <3” background text
+    const egg = document.getElementById('egg');
+    function moveEgg() {
+      const w = window.innerWidth, h = window.innerHeight;
+      const top = Math.random() * (h - 30);
+      const left = Math.random() * (w - 80);
+      egg.style.top = `${top}px`;
+      egg.style.left = `${left}px`;
+    }
+    setInterval(moveEgg, 2900);
+    moveEgg();
+  </script>
+</body>
+</html>
