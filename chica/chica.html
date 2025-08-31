@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Theme System */
+        :root {
+            --theme-bg-primary: rgba(255, 250, 250, 0.95);
+            --theme-bg-secondary: rgba(255, 240, 245, 0.95);
+            --theme-bg-tertiary: rgba(255, 228, 225, 0.95);
+            --theme-bg-quaternary: rgba(255, 218, 224, 0.95);
+            --theme-accent: #ff69b4;
+            --theme-text-primary: #d63384;
+            --theme-text-secondary: #e83e8c;
+            --theme-text-tertiary: #8b4b8c;
+            --theme-border: rgba(255, 105, 180, 0.3);
+            --theme-glow: rgba(255, 105, 180, 0.4);
+            --theme-overlay: rgba(255, 192, 203, 0.15);
+        }
+
+        [data-theme="lavender"] {
+            --theme-bg-primary: rgba(240, 230, 255, 0.95);
+            --theme-bg-secondary: rgba(235, 225, 255, 0.95);
+            --theme-bg-tertiary: rgba(230, 220, 255, 0.95);
+            --theme-bg-quaternary: rgba(225, 215, 255, 0.95);
+            --theme-accent: #9370db;
+            --theme-text-primary: #663399;
+            --theme-text-secondary: #8a2be2;
+            --theme-text-tertiary: #6a5acd;
+            --theme-border: rgba(147, 112, 219, 0.3);
+            --theme-glow: rgba(147, 112, 219, 0.4);
+            --theme-overlay: rgba(186, 164, 235, 0.15);
+        }
+
+        [data-theme="mint"] {
+            --theme-bg-primary: rgba(240, 255, 250, 0.95);
+            --theme-bg-secondary: rgba(230, 255, 240, 0.95);
+            --theme-bg-tertiary: rgba(220, 255, 235, 0.95);
+            --theme-bg-quaternary: rgba(210, 255, 230, 0.95);
+            --theme-accent: #20b2aa;
+            --theme-text-primary: #2e8b57;
+            --theme-text-secondary: #3cb371;
+            --theme-text-tertiary: #66cdaa;
+            --theme-border: rgba(32, 178, 170, 0.3);
+            --theme-glow: rgba(32, 178, 170, 0.4);
+            --theme-overlay: rgba(175, 238, 238, 0.15);
+        }
+
+        [data-theme="peach"] {
+            --theme-bg-primary: rgba(255, 245, 238, 0.95);
+            --theme-bg-secondary: rgba(255, 235, 220, 0.95);
+            --theme-bg-tertiary: rgba(255, 225, 200, 0.95);
+            --theme-bg-quaternary: rgba(255, 215, 180, 0.95);
+            --theme-accent: #ff8c69;
+            --theme-text-primary: #cd853f;
+            --theme-text-secondary: #d2691e;
+            --theme-text-tertiary: #daa520;
+            --theme-border: rgba(255, 140, 105, 0.3);
+            --theme-glow: rgba(255, 140, 105, 0.4);
+            --theme-overlay: rgba(255, 218, 185, 0.15);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-image: url('https://xatimg.com/image/EnX4TnfJXTHu.jpg'), url('https://xatimg.com/image/EnX4TnfJXTHu.jpg');
+            background-size: 400px 400px, 400px 400px;
+            background-position: 0 0, 200px 200px;
+            background-repeat: repeat;
+            min-height: 100vh;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                var(--theme-overlay) 0%, 
+                var(--theme-bg-tertiary) 25%,
+                var(--theme-overlay) 50%,
+                var(--theme-bg-secondary) 75%,
+                var(--theme-overlay) 100%);
+            backdrop-filter: blur(0.5px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Hidden YouTube Background Video */
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -3;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Settings Button */
+        .settings-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--theme-accent), var(--theme-text-primary));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 4px 15px var(--theme-glow);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .settings-button:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px var(--theme-glow);
+        }
+
+        /* Settings Dropdown */
+        .settings-dropdown {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: linear-gradient(145deg, 
+                var(--theme-bg-primary),
+                var(--theme-bg-secondary));
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 10px 30px var(--theme-glow);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--theme-border);
+            opacity: 0;
+            transform: translateY(-10px) scale(0.9);
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            min-width: 160px;
+        }
+
+        .settings-dropdown.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .settings-title {
+            color: var(--theme-text-primary);
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            margin: 0.3rem 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--theme-border);
+        }
+
+        .theme-option:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateX(3px);
+        }
+
+        .theme-option.active {
+            background: var(--theme-accent);
+            color: white;
+            box-shadow: 0 2px 8px var(--theme-glow);
+        }
+
+        .theme-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            flex-shrink: 0;
+        }
+
+        .theme-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .theme-color.pink { background: #ff69b4; }
+        .theme-color.lavender { background: #9370db; }
+        .theme-color.mint { background: #20b2aa; }
+        .theme-color.peach { background: #ff8c69; }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--theme-accent), var(--theme-text-primary));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 4px 15px var(--theme-glow);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .music-player:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px var(--theme-glow);
+        }
+
+        .music-player.playing {
+            animation: musicPulse 1.5s ease-in-out infinite;
+        }
+
+        .music-player.playing:hover {
+            animation: musicPulse 1.5s ease-in-out infinite, musicSpin 3s linear infinite;
+        }
+
+        .music-info {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: linear-gradient(145deg, 
+                var(--theme-bg-primary),
+                var(--theme-bg-secondary));
+            border-radius: 15px;
+            padding: 0.8rem 1rem;
+            box-shadow: 0 8px 20px var(--theme-glow);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--theme-border);
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            pointer-events: none;
+            transition: all 0.4s ease;
+            z-index: 1000;
+            max-width: 200px;
+            text-align: right;
+        }
+
+        .music-info.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .song-title {
+            color: var(--theme-text-primary);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            line-height: 1.2;
+        }
+
+        .song-artist {
+            color: var(--theme-text-tertiary);
+            font-size: 0.7rem;
+            font-style: italic;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://xatimg.com/image/EnX4TnfJXTHu.jpg'), url('https://xatimg.com/image/EnX4TnfJXTHu.jpg');
+            background-size: 400px 400px, 400px 400px;
+            background-position: 0 0, 200px 200px;
+            background-repeat: repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 192, 203, 0.4);
+            backdrop-filter: blur(3px);
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .chica-text {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--theme-accent);
+            margin-bottom: 2rem;
+            letter-spacing: 0.3em;
+            text-shadow: 
+                0 0 20px var(--theme-accent),
+                0 0 40px var(--theme-glow),
+                0 0 60px var(--theme-glow);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+        }
+
+        .letter {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .letter:nth-child(1) { animation-delay: 0s; }
+        .letter:nth-child(2) { animation-delay: 0.2s; }
+        .letter:nth-child(3) { animation-delay: 0.4s; }
+        .letter:nth-child(4) { animation-delay: 0.6s; }
+        .letter:nth-child(5) { animation-delay: 0.8s; }
+
+        .water-container {
+            width: 300px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin: 2rem auto;
+            border: 3px solid var(--theme-border);
+            box-shadow: 
+                0 0 25px var(--theme-glow),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .water-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--theme-accent) 0%, var(--theme-text-primary) 30%, var(--theme-text-secondary) 60%, var(--theme-glow) 100%);
+            width: 0%;
+            transition: width 3s ease-in-out;
+            position: relative;
+            border-radius: 12px;
+            box-shadow: 0 0 20px var(--theme-glow);
+        }
+
+        .water-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        .loading-text {
+            color: var(--theme-accent);
+            font-size: 1.4rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-shadow: 0 0 15px var(--theme-glow);
+        }
+
+        /* Profile Card */
+        .profile-container {
+            display: none;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .profile-container.show {
+            display: flex;
+        }
+
+        .profile-card {
+            background: linear-gradient(145deg, 
+                var(--theme-bg-primary) 0%, 
+                var(--theme-bg-secondary) 30%, 
+                var(--theme-bg-tertiary) 70%, 
+                var(--theme-bg-quaternary) 100%);
+            border-radius: 25px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 
+                0 20px 50px rgba(255, 105, 180, 0.2),
+                0 0 0 2px rgba(255, 192, 203, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.9);
+            text-align: center;
+            position: relative;
+            transform: scale(0);
+            animation: cardPop 0.8s ease-out forwards;
+            backdrop-filter: blur(25px);
+            max-width: 320px;
+            width: 100%;
+            border: 3px solid var(--theme-border);
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background-image: url('https://xatimg.com/image/u66T4fsUsnHX.gif');
+            background-size: cover;
+            background-position: center;
+            border-radius: 22px 22px 0 0;
+            z-index: 1;
+        }
+
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to bottom, 
+                rgba(255, 192, 203, 0.4) 0%, 
+                rgba(255, 182, 193, 0.7) 100%);
+            border-radius: 22px 22px 0 0;
+            z-index: 2;
+        }
+
+        .profile-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin: 1rem auto 1rem;
+            border: 4px solid var(--theme-accent);
+            overflow: hidden;
+            position: relative;
+            z-index: 3;
+            animation: profileGlow 3s ease-in-out infinite alternate;
+            box-shadow: 
+                0 0 20px var(--theme-glow),
+                0 0 40px var(--theme-glow),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--theme-text-primary);
+            margin-bottom: 0.3rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.3s forwards;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-shadow: 0 2px 4px rgba(214, 51, 132, 0.3);
+        }
+
+        .profile-status {
+            color: var(--theme-text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.5s forwards;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .profile-location {
+            color: var(--theme-accent);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.7s forwards;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .bio-section {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 2px solid rgba(255, 192, 203, 0.5);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.9s forwards;
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                inset 0 1px 3px rgba(255, 255, 255, 0.8),
+                0 2px 8px rgba(255, 105, 180, 0.1);
+        }
+
+        .bio-title {
+            font-size: 1rem;
+            color: var(--theme-text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+        }
+
+        .bio-text {
+            color: var(--theme-text-tertiary);
+            line-height: 1.4;
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        .navlinks {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 1.1s forwards;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-heart {
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.3));
+            margin-bottom: 0.2rem;
+        }
+
+        .nav-label {
+            font-size: 0.65rem;
+            color: var(--theme-text-primary);
+            font-weight: 600;
+            font-style: italic;
+            opacity: 0;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-item:hover .nav-heart {
+            transform: scale(1.15) rotate(10deg);
+            filter: drop-shadow(0 4px 8px rgba(255, 105, 180, 0.5));
+        }
+
+        .nav-item:hover .nav-label {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .nav-item[data-special="lover"]:hover .nav-heart {
+            animation: heartPulse 0.5s infinite, rainbow 1.5s linear infinite;
+        }
+
+        .nav-item[data-special="lover"]::after {
+            content: '✨';
+            position: absolute;
+            top: -6px;
+            right: -3px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            animation: sparkle 1.5s infinite;
+        }
+
+        .nav-item[data-special="lover"]:hover::after {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes cardPop {
+            0% { transform: scale(0) rotate(180deg); }
+            60% { transform: scale(1.05) rotate(0deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes profileGlow {
+            0% { 
+                box-shadow: 
+                    0 0 20px var(--theme-glow),
+                    0 0 40px var(--theme-glow),
+                    inset 0 0 15px rgba(255, 255, 255, 0.3);
+            }
+            100% { 
+                box-shadow: 
+                    0 0 35px var(--theme-glow),
+                    0 0 60px var(--theme-glow),
+                    inset 0 0 25px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1.15) rotate(10deg); }
+            50% { transform: scale(1.25) rotate(10deg); }
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg) drop-shadow(0 4px 8px rgba(255, 105, 180, 0.5)); }
+            25% { filter: hue-rotate(90deg) drop-shadow(0 4px 8px rgba(255, 105, 180, 0.5)); }
+            50% { filter: hue-rotate(180deg) drop-shadow(0 4px 8px rgba(255, 105, 180, 0.5)); }
+            75% { filter: hue-rotate(270deg) drop-shadow(0 4px 8px rgba(255, 105, 180, 0.5)); }
+            100% { filter: hue-rotate(360deg) drop-shadow(0 4px 8px rgba(255, 105, 180, 0.5)); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { 
+                box-shadow: 0 4px 15px var(--theme-glow);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 8px 30px var(--theme-glow);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes musicSpin {
+            0% { transform: scale(1.1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(360deg); }
+        }
+
+        /* Split animation for CHICA text */
+        .split-left { animation: splitLeft 1s ease-in forwards; }
+        .split-right { animation: splitRight 1s ease-in forwards; }
+
+        @keyframes splitLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-150px); opacity: 0; }
+        }
+
+        @keyframes splitRight {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(150px); opacity: 0; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .profile-card {
+                margin: 1rem;
+                padding: 1.2rem 1.2rem;
+            }
+            
+            .navlinks {
+                gap: 0.6rem;
+            }
+            
+            .nav-heart {
+                font-size: 1.1rem;
+            }
+            
+            .chica-text {
+                font-size: 3rem;
+            }
+
+            .settings-button {
+                top: 15px;
+                right: 15px;
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            .settings-dropdown {
+                top: 60px;
+                right: 15px;
+                min-width: 140px;
+            }
+
+            .music-player {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .music-info {
+                bottom: 70px;
+                right: 15px;
+                max-width: 160px;
+                padding: 0.6rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hidden Audio Player -->
+    <audio id="background-audio" loop style="display: none;">
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+        <source src="https://file-examples.com/storage/fe86f8ec8dab9c8c8ce4d30/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Player -->
+    <button class="music-player" id="musicPlayer">
+        <span class="play-icon" id="playIcon">▶️</span>
+        <span class="pause-icon" id="pauseIcon" style="display: none;">⏸️</span>
+    </button>
+    
+    <!-- Music Info -->
+    <div class="music-info" id="musicInfo">
+        <div class="song-title">Lofi Girl</div>
+        <div class="song-artist">Chillhop Music</div>
+    </div>
+
+    <!-- Settings Button -->
+    <button class="settings-button" id="settingsBtn">⚙️</button>
+    
+    <!-- Settings Dropdown -->
+    <div class="settings-dropdown" id="settingsDropdown">
+        <div class="settings-title">✨ Choose Theme ✨</div>
+        <div class="theme-option" data-theme="pink">
+            <div class="theme-color pink"></div>
+            <div class="theme-name">Cotton Candy</div>
+        </div>
+        <div class="theme-option" data-theme="lavender">
+            <div class="theme-color lavender"></div>
+            <div class="theme-name">Lavender Dreams</div>
+        </div>
+        <div class="theme-option" data-theme="mint">
+            <div class="theme-color mint"></div>
+            <div class="theme-name">Mint Breeze</div>
+        </div>
+        <div class="theme-option" data-theme="peach">
+            <div class="theme-color peach"></div>
+            <div class="theme-name">Peachy Keen</div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-container">
+            <div class="chica-text" id="chicaText">
+                <span class="letter">C</span>
+                <span class="letter">H</span>
+                <span class="letter">I</span>
+                <span class="letter">C</span>
+                <span class="letter">A</span>
+            </div>
+            <div class="water-container">
+                <div class="water-fill" id="waterFill"></div>
+            </div>
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="profile-container" id="profileContainer">
+        <div class="profile-card">
+            <div class="profile-image">
+                <img src="https://xatimg.com/image/cCxRcdAKReZd.jpg" alt="Profile">
+            </div>
+            
+            <div class="profile-name">sleepy</div>
+            <div class="profile-status">tulsa, oklahoma</div>
+            <div class="profile-location">chica</div>
+            
+            <div class="bio-section">
+                <div class="bio-title">✧･ﾟ: *✧･ﾟ:* about me *:･ﾟ✧*:･ﾟ✧</div>
+                <div class="bio-text">
+                    just a dreamy girl living in her own little world ♡ 
+                    loves soft things, pastel colors, and cozy rainy days. 
+                    always sleepy but always dreaming of magical moments. 
+                    collector of vintage treasures and cute memories ✿
+                </div>
+            </div>
+            
+            <div class="navlinks">
+                <a href="https://xat.me/Chaii" class="nav-item" data-special="lover">
+                    <div class="nav-heart">💕</div>
+                    <div class="nav-label">lover</div>
+                </a>
+                <a href="https://xat.me/paulo" class="nav-item">
+                    <div class="nav-heart">🌸</div>
+                    <div class="nav-label">paulo</div>
+                </a>
+                <a href="https://xat.me/Goofy" class="nav-item">
+                    <div class="nav-heart">🦋</div>
+                    <div class="nav-label">goofy</div>
+                </a>
+                <a href="https://xat.me/nicholas" class="nav-item">
+                    <div class="nav-heart">🌙</div>
+                    <div class="nav-label">nick</div>
+                </a>
+                <a href="https://xat.me/mathiastrw" class="nav-item">
+                    <div class="nav-heart">🐺</div>
+                    <div class="nav-label">mathias</div>
+                </a>
+                <a href="https://xat.me/mikay" class="nav-item">
+                    <div class="nav-heart">🌷</div>
+                    <div class="nav-label">askim</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple Audio Player Variables
+        let isPlaying = false;
+        let musicInfoTimeout = null;
+        let audioElement = null;
+
+        // Music Player functionality
+        function initializeMusicPlayer() {
+            const musicPlayer = document.getElementById('musicPlayer');
+            const musicInfo = document.getElementById('musicInfo');
+            audioElement = document.getElementById('background-audio');
+            
+            // Set volume to 30%
+            audioElement.volume = 0.3;
+            
+            musicPlayer.addEventListener('click', () => {
+                if (!isPlaying) {
+                    // Start playing
+                    isPlaying = true;
+                    audioElement.play().then(() => {
+                        updateMusicPlayerUI(true);
+                    }).catch((error) => {
+                        console.log('Audio play failed:', error);
+                        // Fallback: just update UI even if audio fails
+                        updateMusicPlayerUI(true);
+                    });
+                } else {
+                    // Stop playing
+                    isPlaying = false;
+                    audioElement.pause();
+                    audioElement.currentTime = 0;
+                    updateMusicPlayerUI(false);
+                }
+            });
+
+            // Show music info on hover when playing
+            musicPlayer.addEventListener('mouseenter', () => {
+                if (isPlaying) {
+                    musicInfo.classList.add('show');
+                    clearTimeout(musicInfoTimeout);
+                }
+            });
+
+            musicPlayer.addEventListener('mouseleave', () => {
+                if (isPlaying) {
+                    clearTimeout(musicInfoTimeout);
+                    musicInfoTimeout = setTimeout(() => {
+                        musicInfo.classList.remove('show');
+                    }, 1500);
+                }
+            });
+        }
+
+        function updateMusicPlayerUI(playing) {
+            const musicPlayer = document.getElementById('musicPlayer');
+            const musicInfo = document.getElementById('musicInfo');
+            const playIcon = document.getElementById('playIcon');
+            const pauseIcon = document.getElementById('pauseIcon');
+            
+            if (playing) {
+                musicPlayer.classList.add('playing');
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'inline';
+                
+                // Show music info temporarily
+                musicInfo.classList.add('show');
+                clearTimeout(musicInfoTimeout);
+                musicInfoTimeout = setTimeout(() => {
+                    musicInfo.classList.remove('show');
+                }, 3000);
+                
+            } else {
+                musicPlayer.classList.remove('playing');
+                playIcon.style.display = 'inline';
+                pauseIcon.style.display = 'none';
+                musicInfo.classList.remove('show');
+            }
+        }
+
+        // Theme Management with emoji sets
+        const themeEmojiSets = {
+            pink: {
+                lover: '💕',
+                paulo: '🌸',
+                goofy: '🦋',
+                nick: '🌙',
+                mathiastrw: '🐺',
+                askim: '🌷'
+            },
+            lavender: {
+                lover: '💜',
+                paulo: '🔮',
+                goofy: '✨',
+                nick: '🌟',
+                mathiastrw: '🌺',
+                askim: '💎'
+            },
+            mint: {
+                lover: '💚',
+                paulo: '🍃',
+                goofy: '🌿',
+                nick: '🦚',
+                mathiastrw: '🌊',
+                askim: '🌱'
+            },
+            peach: {
+                lover: '🧡',
+                paulo: '🍑',
+                goofy: '🦊',
+                nick: '🔥',
+                mathiastrw: '🌅',
+                askim: '🌻'
+            }
+        };
+
+        function updateThemeEmojis(themeName) {
+            const emojiSet = themeEmojiSets[themeName];
+            if (emojiSet) {
+                // Update each nav item emoji
+                document.querySelector('[data-special="lover"] .nav-heart').textContent = emojiSet.lover;
+                document.querySelector('[href="https://xat.me/paulo"] .nav-heart').textContent = emojiSet.paulo;
+                document.querySelector('[href="https://xat.me/Goofy"] .nav-heart').textContent = emojiSet.goofy;
+                document.querySelector('[href="https://xat.me/nicholas"] .nav-heart').textContent = emojiSet.nick;
+                document.querySelector('[href="https://xat.me/mathiastrw"] .nav-heart').textContent = emojiSet.mathiastrw;
+                document.querySelector('[href="https://xat.me/mikay"] .nav-heart').textContent = emojiSet.askim;
+            }
+        }
+
+        function setTheme(themeName) {
+            document.body.setAttribute('data-theme', themeName);
+            localStorage.setItem('selectedTheme', themeName);
+            
+            // Update emojis based on theme
+            updateThemeEmojis(themeName);
+            
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.theme === themeName) {
+                    option.classList.add('active');
+                }
+            });
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'pink';
+            setTheme(savedTheme);
+        }
+
+        // Settings dropdown functionality
+        function initializeSettings() {
+            const settingsBtn = document.getElementById('settingsBtn');
+            const settingsDropdown = document.getElementById('settingsDropdown');
+            
+            settingsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                settingsDropdown.classList.toggle('show');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!settingsDropdown.contains(e.target) && e.target !== settingsBtn) {
+                    settingsDropdown.classList.remove('show');
+                }
+            });
+            
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const theme = option.dataset.theme;
+                    setTheme(theme);
+                    settingsDropdown.classList.remove('show');
+                });
+            });
+        }
+
+        // Start animation sequence
+        function startAnimation() {
+            setTimeout(() => {
+                document.getElementById('waterFill').style.width = '100%';
+            }, 500);
+            
+            setTimeout(() => {
+                const letters = document.querySelectorAll('.letter');
+                letters[0].classList.add('split-left');
+                letters[1].classList.add('split-left');
+                letters[2].classList.add('split-left');
+                letters[3].classList.add('split-right');
+                letters[4].classList.add('split-right');
+            }, 3500);
+            
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('fade-out');
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    document.getElementById('profileContainer').classList.add('show');
+                }, 500);
+            }, 4500);
+        }
+
+        // Initialize everything when page loads
+        window.addEventListener('load', () => {
+            loadSavedTheme();
+            initializeSettings();
+            initializeMusicPlayer();
+            startAnimation();
+        });
+    </script>
+</body>
+</html>
