@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Goofy XS</title>
+  <title>Goofy Profile</title>
   <style>
 /* Reset and base styles */
 
@@ -945,10 +945,13 @@ if (savedColor) {
 // Friends list - Add your friends' usernames here
 const friends = [
   { username: 'Chica', url: 'https://xat.me/chica' },
-  { username: 'NichoLas', url: 'https://xat.me/NichoLas' },
+  { username: 'Nicholas', url: 'https://xat.me/NichoLas' },
   { username: 'Wolfie', url: 'https://xat.me/Wolfie' },
   { username: 'Mikay', url: 'https://xat.me/Mikay' },
-  { username: 'Cutest', url: 'https://xat.me/Cutest' }
+  { username: 'Cutest', url: 'https://xat.me/Cutest' },
+  { username: 'Chaii', url: 'https://xat.me/Chaii' },
+  { username: 'MathiasTRW', url: 'https://xat.me/MathiasTRW' },
+  { username: 'Paulo', url: 'https://xat.me/Paulo' }
 ];
 
 // Loading screen animation
@@ -1165,9 +1168,12 @@ function playMusic() {
   const playButton = document.getElementById('playButton');
   const pauseButton = document.getElementById('pauseButton');
   
-  audio.play();
-  playButton.classList.add('hidden');
-  pauseButton.classList.remove('hidden');
+  audio.play().then(() => {
+    playButton.classList.add('hidden');
+    pauseButton.classList.remove('hidden');
+  }).catch(err => {
+    console.log('Play interrupted:', err);
+  });
 }
 
 function pauseMusic() {
