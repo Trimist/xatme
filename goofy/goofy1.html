@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goofy Profile</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+
+/* CSS Variables */
+:root {
+  --electric-border-color: #dd8448;
+  --electric-light-color: oklch(from var(--electric-border-color) l c h);
+  --gradient-color: oklch(
+    from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4
+  );
+  --color-neutral-900: oklch(0.185 0 0);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: oklch(0.145 0 0);
+  color: oklch(0.985 0 0);
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Main container */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  opacity: 0;
+  transform: translateY(26px) scale(0.97);
+  filter: blur(8px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.8s cubic-bezier(0.16, 0.84, 0.44, 1),
+    filter 0.8s ease;
+}
+
+body.intro-done .main-container.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: none;
+}
+
+/* ===================== */
+/*   INTRO OVERLAY CSS   */
+/* ===================== */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.05) 0, transparent 55%),
+    radial-gradient(
+      circle at bottom,
+      color-mix(in srgb, var(--electric-border-color) 45%, #000 55%) 0,
+      #050107 65%
+    );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+  overflow: hidden;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.intro-overlay::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--electric-border-color) 70%, #fff 30%) 0,
+    transparent 70%
+  );
+  opacity: 0.35;
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.intro-overlay.intro-out {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.intro-core {
+  position: relative;
+  padding: 32px 40px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.07) 0, transparent 55%),
+    rgba(0, 0, 0, 0.7);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.9),
+    0 0 40px color-mix(in srgb, var(--electric-border-color) 55%, #000 45%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px);
+  text-align: center;
+  z-index: 2;
+}
+
+.intro-core::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 220deg,
+    transparent,
+    var(--electric-border-color),
+    transparent,
+    var(--electric-border-color),
+    transparent
+  );
+  opacity: 0.8;
+  filter: blur(6px);
+  mix-blend-mode: screen;
+  z-index: -1;
+}
+
+.intro-logo {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 2.6rem;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-shadow:
+    0 0 16px rgba(0, 0, 0, 0.9),
+    0 0 28px color-mix(in srgb, var(--electric-border-color) 70%, #fff 30%);
+}
+
+.intro-sub {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.intro-button {
+  margin-top: 4px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.28) 0, transparent 55%),
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--electric-border-color) 90%, #fff 10%),
+      color-mix(in srgb, var(--electric-border-color) 60%, #000 40%)
+    );
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--electric-border-color) 70%, #000 30%),
+    0 16px 40px rgba(0, 0, 0, 0.8);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+.intro-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 0 22px color-mix(in srgb, var(--electric-border-color) 90%, #fff 10%),
+    0 18px 50px rgba(0, 0, 0, 0.9);
+  filter: brightness(1.05);
+}
+
+.intro-button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+/* Hidden video (audio only) */
+#introVideo {
+  display: none;
+}
+
+/* ============================= */
+/*  GLOBAL CAPTION LAYER (TIRO)  */
+/* ============================= */
+
+.global-caption-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(24px) scale(0.98);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.16, 0.84, 0.44, 1);
+}
+
+.global-caption-layer.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.caption-tiro-bg {
+  position: absolute;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: clamp(80px, 22vw, 220px);
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  text-transform: uppercase;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.22) 0, transparent 60%),
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--electric-border-color) 80%, #fff 20%),
+      color-mix(in srgb, var(--electric-border-color) 40%, #000 60%)
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.11;
+  filter: blur(1.5px);
+  mix-blend-mode: screen;
+  transform: translateY(-12vh);
+}
+
+.caption-text {
+  position: relative;
+  max-width: 70vw;
+  text-align: center;
+  font-size: clamp(20px, 2.3vw, 34px);
+  line-height: 1.4;
+  padding: 14px 32px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.18) 0, transparent 55%),
+    rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 0 18px rgba(0, 0, 0, 0.9),
+    0 0 28px color-mix(in srgb, var(--electric-border-color) 55%, #000 45%);
+  color: #fefefe;
+  text-shadow:
+    0 0 14px rgba(0, 0, 0, 0.9),
+    0 0 22px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  filter: blur(6px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s cubic-bezier(0.16, 0.84, 0.44, 1),
+    filter 0.5s ease;
+}
+
+.caption-text.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* SVG positioning */
+.svg-container {
+  position: absolute;
+}
+
+/* Card container */
+.card-container {
+  padding: 2px;
+  border-radius: 24px;
+  position: relative;
+  background: linear-gradient(
+      -30deg,
+      var(--gradient-color),
+      transparent,
+      var(--gradient-color)
+    ),
+    linear-gradient(
+      to bottom,
+      var(--color-neutral-900),
+      var(--color-neutral-900)
+    );
+}
+
+/* Inner container */
+.inner-container {
+  position: relative;
+}
+
+/* Border layers */
+.border-outer {
+  border: 2px solid rgba(221, 132, 72, 0.5);
+  border-radius: 24px;
+  padding-right: 4px;
+  padding-bottom: 4px;
+}
+
+.main-card {
+  width: 350px;
+  height: 500px;
+  border-radius: 24px;
+  border: 2px solid var(--electric-border-color);
+  margin-top: -4px;
+  margin-left: -4px;
+  filter: url(#turbulent-displace);
+}
+
+/* Glow effects */
+.glow-layer-1 {
+  border: 2px solid rgba(221, 132, 72, 0.6);
+  border-radius: 24px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  filter: blur(1px);
+}
+
+.glow-layer-2 {
+  border: 2px solid var(--electric-light-color);
+  border-radius: 24px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  filter: blur(4px);
+}
+
+/* Overlay effects */
+.overlay-1 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 24px;
+  opacity: 1;
+  mix-blend-mode: overlay;
+  transform: scale(1.1);
+  filter: blur(16px);
+  background: linear-gradient(
+    -30deg,
+    white,
+    transparent 30%,
+    transparent 70%,
+    white
+  );
+}
+
+.overlay-2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 24px;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  transform: scale(1.1);
+  filter: blur(16px);
+  background: linear-gradient(
+    -30deg,
+    white,
+    transparent 30%,
+    transparent 70%,
+    white
+  );
+}
+
+/* Background glow */
+.background-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 24px;
+  filter: blur(32px);
+  transform: scale(1.1);
+  opacity: 0.3;
+  z-index: -1;
+  background: linear-gradient(
+    -30deg,
+    var(--electric-light-color),
+    transparent,
+    var(--electric-border-color)
+  );
+}
+
+/* Content container */
+.content-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content sections */
+.content-top {
+  display: flex;
+  flex-direction: column;
+  padding: 48px;
+  padding-bottom: 16px;
+  flex: 1;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Profile Picture */
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--electric-border-color);
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  box-shadow: 0 0 30px rgba(221, 132, 72, 0.3);
+  margin-top: 24px;
+  overflow: hidden;
+  transition: border-color 0.4s, box-shadow 0.4s;
+  position: relative;
+}
+
+.profile-picture img,
+.profile-picture canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.profile-picture canvas {
+  display: none;
+}
+
+.content-bottom {
+  display: flex;
+  flex-direction: column;
+  padding: 48px;
+  padding-top: 16px;
+  gap: 16px;
+}
+
+/* Footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.4;
+  background: oklch(0.145 0 0);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 999;
+}
+
+/* Scrollbar glass */
+.scrollbar-glass {
+  background: radial-gradient(
+      47.2% 50% at 50.39% 88.37%,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.04);
+  position: relative;
+  transition: background 0.3s ease;
+  border-radius: 14px;
+  width: fit-content;
+  height: fit-content;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.scrollbar-glass:hover {
+  background: radial-gradient(
+      47.2% 50% at 50.39% 88.37%,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.08);
+}
+
+.scrollbar-glass::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1px;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.48) 16.73%,
+    rgba(255, 255, 255, 0.08) 30.2%,
+    rgba(255, 255, 255, 0.08) 68.2%,
+    rgba(255, 255, 255, 0.6) 81.89%
+  );
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* Friends button */
+.friends-button {
+  position: fixed;
+  bottom: 64px;
+  right: 24px;
+  cursor: pointer;
+  border: none;
+  background: radial-gradient(
+      47.2% 50% at 50.39% 88.37%,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.04);
+  z-index: 999;
+}
+
+/* Music controls */
+.music-controls {
+  position: fixed;
+  bottom: 64px;
+  left: 24px;
+  display: flex;
+  gap: 12px;
+  z-index: 999;
+}
+
+.music-button,
+.settings-button {
+  cursor: pointer;
+  border: none;
+  background: radial-gradient(
+      47.2% 50% at 50.39% 88.37%,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.04);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.music-button::before,
+.settings-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1px;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.48) 16.73%,
+    rgba(255, 255, 255, 0.08) 30.2%,
+    rgba(255, 255, 255, 0.08) 68.2%,
+    rgba(255, 255, 255, 0.6) 81.89%
+  );
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+.music-button:hover,
+.settings-button:hover {
+  background: radial-gradient(
+      47.2% 50% at 50.39% 88.37%,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.08);
+}
+
+.music-button.hidden {
+  display: none;
+}
+
+.music-button svg,
+.settings-button svg {
+  width: 20px;
+  height: 20px;
+  fill: rgba(255, 255, 255, 0.8);
+}
+
+/* Theme Settings Panel */
+.theme-settings {
+  position: fixed;
+  left: -400px;
+  top: 0;
+  width: 400px;
+  height: 100vh;
+  background: oklch(0.185 0 0);
+  border-right: 2px solid var(--electric-border-color);
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.theme-settings.open {
+  left: 0;
+}
+
+.theme-settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-settings-header h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--electric-border-color);
+}
+
+.theme-settings-content {
+  padding: 24px;
+}
+
+.color-section {
+  margin-bottom: 32px;
+}
+
+.color-section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.color-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.color-preset {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.color-preset:hover {
+  transform: scale(1.1);
+}
+
+.color-preset.active {
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 20px currentColor;
+}
+
+.custom-color-picker {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.custom-color-picker input[type="color"] {
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  background: none;
+}
+
+.custom-color-picker input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.custom-color-picker input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 8px;
+}
+
+.apply-custom-btn {
+  flex: 1;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--electric-border-color) 0%, var(--electric-light-color) 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.apply-custom-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(221, 132, 72, 0.4);
+}
+
+/* Typography */
+.title {
+  font-size: 36px;
+  font-weight: 500;
+  margin-top: auto;
+}
+
+.description {
+  opacity: 0.5;
+}
+
+/* Divider */
+.divider {
+  margin-top: auto;
+  border: none;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.1;
+  mask-image: linear-gradient(to right, transparent, black, transparent);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black,
+    transparent
+  );
+}
+
+/* Friends Panel */
+.friends-panel {
+  position: fixed;
+  right: -400px;
+  top: 0;
+  width: 400px;
+  height: 100vh;
+  background: oklch(0.185 0 0);
+  border-left: 2px solid var(--electric-border-color);
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.friends-panel.open {
+  right: 0;
+}
+
+.friends-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.friends-header h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--electric-border-color);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: oklch(0.985 0 0);
+  font-size: 32px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.friends-list {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: oklch(0.985 0 0);
+  transition: background 0.2s;
+  margin-bottom: 8px;
+}
+
+.friend-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.friend-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--electric-border-color), var(--electric-light-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.friend-avatar img,
+.friend-avatar canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.friend-avatar canvas {
+  display: none;
+}
+  </style>
+</head>
+<body>
+
+<!-- Cinematic Intro Overlay -->
+<div class="intro-overlay" id="introOverlay">
+  <div class="intro-core">
+    <div class="intro-logo">TIRO</div>
+    <p class="intro-sub">Profile initialization sequence</p>
+    <button class="intro-button" id="introStartBtn">
+      Start
+    </button>
+  </div>
+
+  <!-- Hidden video for audio + timing -->
+  <video id="introVideo" src="video.mp4" preload="auto"></video>
+</div>
+
+<!-- Global captions always visible while audio plays -->
+<div class="global-caption-layer" id="captionLayer">
+  <div class="caption-tiro-bg">TIRO</div>
+  <div class="caption-text" id="captionText"></div>
+</div>
+
+<main class="main-container" id="mainContainer">
+  <svg class="svg-container">
+    <defs>
+      <filter id="turbulent-displace" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
+        <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
+          <animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+        </feOffset>
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="1" />
+        <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
+          <animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" />
+        </feOffset>
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="2" />
+        <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3">
+          <animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+        </feOffset>
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="2" />
+        <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4">
+          <animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" />
+        </feOffset>
+        <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+        <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+        <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+        <feDisplacementMap in="SourceGraphic" in2="combinedNoise" scale="30" xChannelSelector="R" yChannelSelector="B" />
+      </filter>
+    </defs>
+  </svg>
+  <div class="card-container">
+    <div class="inner-container">
+      <div class="border-outer">
+        <div class="main-card"></div>
+      </div>
+      <div class="glow-layer-1"></div>
+      <div class="glow-layer-2"></div>
+    </div>
+    <div class="overlay-1"></div>
+    <div class="overlay-2"></div>
+    <div class="background-glow"></div>
+    <div class="content-container">
+      <div class="content-top">
+        <div class="profile-picture" id="avatar-container">
+          <img id="avatar-img" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Avatar" data-avatar="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" style="display:block;">
+          <canvas id="avatar-canvas" width="120" height="120" style="display:none;"></canvas>
+        </div>
+        <p class="title">Goofy</p>
+      </div>
+      <hr class="divider" />
+      <div class="content-bottom">
+        <p class="description">Hyuck! Just a goofy guy living life one laugh at a time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Music Controls -->
+  <div class="music-controls">
+    <button class="music-button" id="playButton" onclick="playMusic()">
+      <svg viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
+    <button class="music-button hidden" id="pauseButton" onclick="pauseMusic()">
+      <svg viewBox="0 0 24 24">
+        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+      </svg>
+    </button>
+    <button class="settings-button" onclick="toggleThemeSettings()">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 15.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5zm7.4-2.9l2.1-1.6c.2-.1.2-.4.1-.6l-2-3.5c-.1-.2-.4-.3-.6-.2l-2.5 1c-.5-.4-1.1-.7-1.7-1l-.4-2.6c0-.2-.3-.4-.5-.4h-4c-.3 0-.5.2-.5.4l-.4 2.6c-.6.2-1.1.6-1.7 1l-2.5-1c-.2-.1-.5 0-.6.2l-2 3.5c-.1.2 0 .5.1.6l2.1 1.6c0 .3-.1.6-.1.9 0 .3 0 .6.1.9l-2.1 1.6c-.2.1-.2.4-.1.6l2 3.5c.1.2.4.3.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.6c0 .2.3.4.5.4h4c.3 0 .5-.2.5-.4l.4-2.6c.6-.2 1.1-.6 1.7-1l2.5 1c.2.1.5 0 .6-.2l2-3.5c.1-.2 0-.5-.1-.6l-2.1-1.6c0-.3.1-.6.1-.9 0-.3 0-.6-.1-.9z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Audio Element -->
+  <audio id="backgroundMusic" loop>
+    <source src="song1.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Friends Button -->
+  <button class="friends-button scrollbar-glass" onclick="toggleFriends()">Friends</button>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Tiro (221192) | <span id="status-text">Checking...</span></p>
+  </div>
+
+  <!-- Friends Panel -->
+  <div class="friends-panel" id="friendsPanel">
+    <div class="friends-header">
+      <h3>Friends</h3>
+      <button class="close-button" onclick="toggleFriends()">×</button>
+    </div>
+    <div class="friends-list" id="friendsList"></div>
+  </div>
+
+  <!-- Theme Settings Panel -->
+  <div class="theme-settings" id="themeSettings">
+    <div class="theme-settings-header">
+      <h3>Theme Settings</h3>
+      <button class="close-button" onclick="toggleThemeSettings()">×</button>
+    </div>
+    <div class="theme-settings-content">
+      <div class="color-section">
+        <h4>Color Presets</h4>
+        <div class="color-presets">
+          <button class="color-preset active" style="background: #dd8448;" data-color="#dd8448" onclick="applyPresetColor('#dd8448')"></button>
+          <button class="color-preset" style="background: #e74c3c;" data-color="#e74c3c" onclick="applyPresetColor('#e74c3c')"></button>
+          <button class="color-preset" style="background: #3498db;" data-color="#3498db" onclick="applyPresetColor('#3498db')"></button>
+          <button class="color-preset" style="background: #2ecc71;" data-color="#2ecc71" onclick="applyPresetColor('#2ecc71')"></button>
+          <button class="color-preset" style="background: #9b59b6;" data-color="#9b59b6" onclick="applyPresetColor('#9b59b6')"></button>
+          <button class="color-preset" style="background: #f39c12;" data-color="#f39c12" onclick="applyPresetColor('#f39c12')"></button>
+          <button class="color-preset" style="background: #1abc9c;" data-color="#1abc9c" onclick="applyPresetColor('#1abc9c')"></button>
+          <button class="color-preset" style="background: #e91e63;" data-color="#e91e63" onclick="applyPresetColor('#e91e63')"></button>
+        </div>
+      </div>
+      <div class="color-section">
+        <h4>Custom Color</h4>
+        <div class="custom-color-picker">
+          <input type="color" id="customColorPicker" value="#dd8448">
+          <button class="apply-custom-btn" onclick="applyCustomColor()">Apply Custom</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// Cookie helpers
+function setCookie(name, value) {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + (10 * 365 * 24 * 60 * 60 * 1000));
+  document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+}
+
+function getCookie(name) {
+  const nameEQ = name + '=';
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+// Theme color functions
+function updateThemeColor(color) {
+  document.documentElement.style.setProperty('--electric-border-color', color);
+  setCookie('themeColor', color);
+
+  document.querySelectorAll('.color-preset').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.color === color) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function applyPresetColor(color) {
+  updateThemeColor(color);
+  const picker = document.getElementById('customColorPicker');
+  if (picker) picker.value = color;
+}
+
+function applyCustomColor() {
+  const color = document.getElementById('customColorPicker').value;
+  updateThemeColor(color);
+  document.querySelectorAll('.color-preset').forEach(btn => btn.classList.remove('active'));
+}
+
+function toggleThemeSettings() {
+  const panel = document.getElementById('themeSettings');
+  panel.classList.toggle('open');
+}
+
+// Load saved theme immediately
+const savedColor = getCookie('themeColor');
+if (savedColor) {
+  document.documentElement.style.setProperty('--electric-border-color', savedColor);
+}
+
+// Friends list
+const friends = [
+  { username: 'Chica', url: 'https://xat.me/chica' },
+  { username: 'Nicholas', url: 'https://xat.me/NichoLas' },
+  { username: 'Wolfie', url: 'https://xat.me/Wolfie' },
+  { username: 'Mikay', url: 'https://xat.me/Mikay' },
+  { username: 'Cutest', url: 'https://xat.me/Cutest' },
+  { username: 'Chaii', url: 'https://xat.me/Chaii' },
+  { username: 'MathiasTRW', url: 'https://xat.me/MathiasTRW' },
+  { username: 'Paulo', url: 'https://xat.me/Paulo' }
+];
+
+/* ========================= */
+/*  CINEMATIC INTRO LOGIC    */
+/* ========================= */
+function initIntro() {
+  const overlay = document.getElementById('introOverlay');
+  const startBtn = document.getElementById('introStartBtn');
+  const captionLayer = document.getElementById('captionLayer');
+  const captionEl = document.getElementById('captionText');
+  const video = document.getElementById('introVideo');
+
+  if (!overlay || !startBtn || !captionEl || !captionLayer || !video) return;
+
+  const captions = [
+    { start: 0.0, end: 3.0, text: "Is it better to be loved or feared?" },
+    {
+      start: 3.0,
+      end: 8.0,
+      text: "That's a good question. It's nice to be both, but it's very difficult."
+    },
+    {
+      start: 8.0,
+      end: 13.0,
+      text: "But if I had my choice, I would rather be feared."
+    },
+    {
+      start: 13.0,
+      end: 19.0,
+      text: "Fear lasts longer than love. Friendships that are bought with money mean nothing."
+    },
+    {
+      start: 19.0,
+      end: 22.0,
+      text: "You see how it is around here. I make a joke, everybody laughs."
+    },
+    {
+      start: 22.0,
+      end: 30.0,
+      text: "I know I'm funny, but I'm not that funny. It's fear that keeps them loyal to me."
+    }
+  ];
+
+  let currentIndex = -1;
+  let hasStarted = false;
+
+  function showCaption(text) {
+    if (!text) return;
+    captionEl.classList.remove('show');   // reset animation
+    void captionEl.offsetWidth;           // force reflow
+    captionEl.textContent = text;
+    captionEl.classList.add('show');
+  }
+
+  function clearCaption() {
+    captionEl.classList.remove('show');
+    // small delay so fade-out plays before text is cleared
+    setTimeout(() => {
+      captionEl.textContent = "";
+    }, 200);
+  }
+
+  function updateFromTime(t) {
+    // Find active caption at this time
+    const idx = captions.findIndex(c => t >= c.start && t < c.end);
+
+    if (idx === -1) {
+      // No caption at this moment – fade out if one was showing
+      if (currentIndex !== -1) {
+        currentIndex = -1;
+        clearCaption();
+      }
+      return;
+    }
+
+    if (idx !== currentIndex) {
+      currentIndex = idx;
+      showCaption(captions[idx].text);
+    }
+  }
+
+  video.addEventListener('timeupdate', () => {
+    updateFromTime(video.currentTime);
+  });
+
+  // When audio finishes, fade out the whole caption layer
+  video.addEventListener('ended', () => {
+    clearCaption();
+    captionLayer.classList.remove('active');
+  });
+
+  startBtn.addEventListener('click', () => {
+    if (hasStarted) return;
+    hasStarted = true;
+
+    // Show caption layer over main view
+    captionLayer.classList.add('active');
+
+    // Fade out intro overlay
+    overlay.classList.add('intro-out');
+    document.body.classList.add('intro-done');
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 800);
+
+    // Start video (audio) from beginning
+    video.currentTime = 0;
+    video.play().catch(err => {
+      console.log('Video play blocked:', err);
+    });
+  });
+}
+
+/* ========================= */
+/*     AVATAR / FRIENDS      */
+/* ========================= */
+
+function isSpriteSheet(img) {
+  return img.naturalWidth > img.naturalHeight &&
+         img.naturalWidth % img.naturalHeight === 0;
+}
+
+function animateAvatar(img, canvas, timerId) {
+  const url = img.getAttribute('data-avatar');
+  const canvasSize = canvas.width;
+
+  img.onload = function() {
+    if (
+      /\.gif$/i.test(url) ||
+      (img.naturalHeight === img.naturalWidth &&
+       img.naturalHeight <= 1758 &&
+       img.naturalWidth <= 1758)
+    ) {
+      img.style.display = "block";
+      canvas.style.display = "none";
+      if (window[timerId]) clearInterval(window[timerId]);
+    } else if (isSpriteSheet(img)) {
+      img.style.display = "none";
+      canvas.style.display = "block";
+
+      const frameSize = img.naturalHeight;
+      const frameCount = img.naturalWidth / frameSize;
+
+      let frame = 0;
+      const ctx = canvas.getContext('2d');
+      if (window[timerId]) clearInterval(window[timerId]);
+
+      function drawFrame() {
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
+        ctx.drawImage(
+          img,
+          frame * frameSize, 0,
+          frameSize, frameSize,
+          0, 0, canvasSize, canvasSize
+        );
+        frame = (frame + 1) % frameCount;
+      }
+      drawFrame();
+      window[timerId] = setInterval(drawFrame, 140);
+    } else {
+      img.style.display = "block";
+      canvas.style.display = "none";
+      if (window[timerId]) clearInterval(window[timerId]);
+    }
+  };
+
+  img.src = url;
+}
+
+function showAvatar() {
+  const img = document.getElementById('avatar-img');
+  const canvas = document.getElementById('avatar-canvas');
+  if (!img || !canvas) return;
+  animateAvatar(img, canvas, 'avatarTimer');
+}
+
+function loadFriends() {
+  const friendsList = document.getElementById('friendsList');
+  friendsList.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;">Loading friends...</div>';
+
+  let loadedCount = 0;
+  const friendElements = [];
+
+  friends.forEach((friend, index) => {
+    fetch(`https://pythbots.com/api/userinfo.php?user=${friend.username}`)
+      .then(r => r.json())
+      .then(data => {
+        let avatarUrl = "https://xat.com/web_gear/chat/av/0.png";
+
+        if (data.avatar) {
+          const parts = data.avatar.split('#');
+          if (/^\d+$/.test(parts[0])) {
+            avatarUrl = `https://xat.com/web_gear/chat/av/${parts[0]}.png`;
+          } else if (parts[0].startsWith('http')) {
+            avatarUrl = parts[0];
+          }
+        }
+
+        const friendItem = document.createElement('a');
+        friendItem.href = friend.url;
+        friendItem.target = '_blank';
+        friendItem.className = 'friend-item';
+
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'friend-avatar';
+
+        const avatarImg = document.createElement('img');
+        avatarImg.src = 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif';
+        avatarImg.setAttribute('data-avatar', avatarUrl);
+        avatarImg.style.display = 'block';
+
+        const avatarCanvas = document.createElement('canvas');
+        avatarCanvas.width = 48;
+        avatarCanvas.height = 48;
+        avatarCanvas.style.display = 'none';
+
+        avatarDiv.appendChild(avatarImg);
+        avatarDiv.appendChild(avatarCanvas);
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = friend.username;
+
+        friendItem.appendChild(avatarDiv);
+        friendItem.appendChild(nameSpan);
+
+        friendElements[index] = friendItem;
+
+        animateAvatar(avatarImg, avatarCanvas, `friendTimer${index}`);
+
+        loadedCount++;
+        if (loadedCount === friends.length) {
+          friendsList.innerHTML = '';
+          friendElements.forEach(el => friendsList.appendChild(el));
+        }
+      })
+      .catch(() => {
+        const friendItem = document.createElement('a');
+        friendItem.href = friend.url;
+        friendItem.target = '_blank';
+        friendItem.className = 'friend-item';
+
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'friend-avatar';
+        avatarDiv.textContent = friend.username.charAt(0).toUpperCase();
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = friend.username;
+
+        friendItem.appendChild(avatarDiv);
+        friendItem.appendChild(nameSpan);
+
+        friendElements[index] = friendItem;
+
+        loadedCount++;
+        if (loadedCount === friends.length) {
+          friendsList.innerHTML = '';
+          friendElements.forEach(el => friendsList.appendChild(el));
+        }
+      });
+  });
+}
+
+/* ========================= */
+/*     PROFILE + MUSIC       */
+/* ========================= */
+
+function updateProfileFromAPI(data) {
+  const statusText = document.getElementById('status-text');
+  const avatarImg = document.getElementById('avatar-img');
+
+  if (data.is_online) {
+    statusText.textContent = 'Available';
+    statusText.style.color = '#2bf45f';
+  } else {
+    statusText.textContent = 'Offline';
+    statusText.style.color = '#ed3942';
+  }
+
+  if (data.avatar) {
+    const parts = data.avatar.split('#');
+    let realUrl = "";
+    if (/^\d+$/.test(parts[0])) {
+      realUrl = `https://xat.com/web_gear/chat/av/${parts[0]}.png`;
+    } else if (parts[0].startsWith('http')) {
+      realUrl = parts[0];
+    } else {
+      realUrl = "https://xat.com/web_gear/chat/av/0.png";
+    }
+
+    avatarImg.setAttribute('data-avatar', realUrl);
+    showAvatar();
+  }
+}
+
+function fetchProfile() {
+  fetch('https://pythbots.com/api/userinfo.php?user=goofy')
+    .then(r => r.json())
+    .then(updateProfileFromAPI)
+    .catch(() => {
+      const statusText = document.getElementById('status-text');
+      statusText.textContent = 'Offline';
+      statusText.style.color = '#ed3942';
+    });
+}
+
+// Music controls
+function playMusic() {
+  const audio = document.getElementById('backgroundMusic');
+  const playButton = document.getElementById('playButton');
+  const pauseButton = document.getElementById('pauseButton');
+
+  audio.play().then(() => {
+    playButton.classList.add('hidden');
+    pauseButton.classList.remove('hidden');
+  }).catch(err => {
+    console.log('Play interrupted:', err);
+  });
+}
+
+function pauseMusic() {
+  const audio = document.getElementById('backgroundMusic');
+  const playButton = document.getElementById('playButton');
+  const pauseButton = document.getElementById('pauseButton');
+
+  audio.pause();
+  pauseButton.classList.add('hidden');
+  playButton.classList.remove('hidden');
+}
+
+// Friends panel toggle
+function toggleFriends() {
+  const panel = document.getElementById('friendsPanel');
+  panel.classList.toggle('open');
+}
+
+/* ========================= */
+/*        ON WINDOW LOAD     */
+/* ========================= */
+window.addEventListener('load', function() {
+  const saved = getCookie('themeColor');
+  if (saved) {
+    const picker = document.getElementById('customColorPicker');
+    if (picker) picker.value = saved;
+
+    document.querySelectorAll('.color-preset').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.color === saved);
+    });
+  }
+
+  const mainContainer = document.getElementById('mainContainer');
+  if (mainContainer) mainContainer.classList.add('visible');
+
+  fetchProfile();
+  setInterval(fetchProfile, 30000);
+  loadFriends();
+  showAvatar();
+  initIntro();
+});
+</script>
+
+</body>
+</html>
