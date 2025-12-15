@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nicholas</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="machine-wrap">
+            <div class="machine">
+                <div class="machine-roof">
+                    <div class="machine-silencer">
+                        <div class="machine-smoke"></div>
+                    </div>
+                </div>
+                <div class="machine-main">
+                    <div class="machine-body"></div>
+                    <div class="machine-back"></div>
+                    <div class="machine-front"></div>
+                </div>	
+            </div>
+            <div class="road">
+                <div class="mud-wrap clearfix">
+                    <div class="mud"></div>
+                    <div class="mud"></div>
+                    <div class="mud"></div>
+                    <div class="mud"></div>
+                </div>
+            </div>
+        </div>
+        <div class="loading-text">Loading...</div>
+    </div>
+
+    <!-- Profile Page -->
+    <main class='profile' id="profilePage" ontouchstart>
+        <div class='background'></div>
+        <aside class='avatar' id="avatar-container">
+            <img id="avatar-img" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Avatar" data-avatar="https://xat.com/web_gear/chat/av/0.png" style="display:block;">
+            <canvas id="avatar-canvas" width="200" height="200" style="display:none;"></canvas>
+            <div class="status-indicator" id="statusIndicator"></div>
+        </aside>
+        <section class='info'>
+            <h1>Nicholas (10010101)</h1>
+            <h2>Contributor</h2>
+            <a class='follow' href='https://forum.xat.com/profile/7148/' target='_blank'>+ Follow</a>
+            <ul>
+                <li>
+                    <a class='link chat-nick' href='https://xat.com/Nick' target='_blank'>
+                        <svg viewbox='0 0 85 85'>
+                            <path d='M42.5,7 L42.5,78 M7,42.5 L78,42.5 M20,20 L65,65 M65,20 L20,65 M42.5,7 C23.5,7 7,23.5 7,42.5 C7,61.5 23.5,78 42.5,78 C61.5,78 78,61.5 78,42.5 C78,23.5 61.5,7 42.5,7 Z'></path>
+                        </svg>
+                        <span>Nick</span>
+                    </a>
+                </li>
+                <li>
+                    <a class='link chat-assistance' href='https://xat.com/Assistance' target='_blank'>
+                        <svg viewbox='0 0 85 85'>
+                            <path d='M42.5,15 L42.5,70 M15,42.5 L70,42.5 M42.5,7 C23.5,7 7,23.5 7,42.5 C7,61.5 23.5,78 42.5,78 C61.5,78 78,61.5 78,42.5 C78,23.5 61.5,7 42.5,7 Z M30,30 L55,30 M30,42.5 L55,42.5 M30,55 L55,55'></path>
+                        </svg>
+                        <span>Assistance</span>
+                    </a>
+                </li>
+                <li>
+                    <a class='link chat-help' href='https://xat.com/Help' target='_blank'>
+                        <svg viewbox='0 0 85 85'>
+                            <path d='M42.5,7 C23.5,7 7,23.5 7,42.5 C7,61.5 23.5,78 42.5,78 C61.5,78 78,61.5 78,42.5 C78,23.5 61.5,7 42.5,7 Z M42.5,58 L42.5,63 M42.5,25 C35,25 32,30 32,35 L42.5,35 C42.5,32 43,30 47,30 C50,30 52,31 52,34 C52,37 50,38 46,41 C42,44 40,46 40,50 L45,50 C45,47 46,46 49,43 C53,40 56,38 56,33 C56,27 52,25 47,25 C45,25 43,25 42.5,25 Z'></path>
+                        </svg>
+                        <span>Help</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="profile-footer">
+            <p>&copy; 2025 Nicholas (10010101)</p>
+        </footer>
+    </main>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const profilePage = document.getElementById('profilePage');
+            
+            // After 5 seconds, hide loading screen and show profile
+            setTimeout(function() {
+                // Fade out loading screen
+                loadingScreen.classList.add('hidden');
+                
+                // After fade out completes, show profile with animation
+                setTimeout(function() {
+                    profilePage.classList.add('active', 'pre-enter');
+                    
+                    // Trigger entrance animation
+                    setTimeout(function() {
+                        profilePage.classList.add('on-enter');
+                    }, 100);
+                    
+                    // Remove animation classes after completion
+                    setTimeout(function() {
+                        profilePage.classList.remove('pre-enter', 'on-enter');
+                    }, 1000);
+                    
+                    // Start fetching profile after page loads
+                    fetchProfile();
+                    setInterval(fetchProfile, 30000); // Update every 30 seconds
+                }, 500);
+            }, 5000); // 5 seconds delay
+        });
+
+        // Avatar animation functions
+        function isSpriteSheet(img) {
+            return img.naturalWidth > img.naturalHeight && 
+                   img.naturalWidth % img.naturalHeight === 0;
+        }
+
+        function animateAvatar(img, canvas, timerId) {
+            const url = img.getAttribute('data-avatar');
+            const canvasSize = canvas.width;
+
+            img.onload = function() {
+                if (
+                    /\.gif$/i.test(url) ||
+                    (img.naturalHeight === img.naturalWidth && img.naturalHeight <= 1758 && img.naturalWidth <= 1758)
+                ) {
+                    img.style.display = "block";
+                    canvas.style.display = "none";
+                    if (window[timerId]) clearInterval(window[timerId]);
+                } else if (isSpriteSheet(img)) {
+                    img.style.display = "none";
+                    canvas.style.display = "block";
+                    
+                    const frameSize = img.naturalHeight;
+                    const frameCount = img.naturalWidth / frameSize;
+                    
+                    let frame = 0;
+                    const ctx = canvas.getContext('2d');
+                    if (window[timerId]) clearInterval(window[timerId]);
+                    
+                    function drawFrame() {
+                        ctx.clearRect(0, 0, canvasSize, canvasSize);
+                        ctx.drawImage(img, frame * frameSize, 0, frameSize, frameSize, 0, 0, canvasSize, canvasSize);
+                        frame = (frame + 1) % frameCount;
+                    }
+                    drawFrame();
+                    window[timerId] = setInterval(drawFrame, 140);
+                } else {
+                    img.style.display = "block";
+                    canvas.style.display = "none";
+                    if (window[timerId]) clearInterval(window[timerId]);
+                }
+            };
+            img.src = url;
+        }
+
+        function showAvatar() {
+            const img = document.getElementById('avatar-img');
+            const canvas = document.getElementById('avatar-canvas');
+            if (!img || !canvas) return;
+            animateAvatar(img, canvas, 'avatarTimer');
+        }
+
+        // Profile API integration
+        function updateProfileFromAPI(data) {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const avatarImg = document.getElementById('avatar-img');
+            
+            // Update status indicator
+            if (data.is_online) {
+                statusIndicator.classList.add('online');
+                statusIndicator.classList.remove('offline');
+            } else {
+                statusIndicator.classList.add('offline');
+                statusIndicator.classList.remove('online');
+            }
+
+            // Update avatar image
+            if (data.avatar) {
+                const parts = data.avatar.split('#');
+                let realUrl = "";
+                if (/^\d+$/.test(parts[0])) {
+                    realUrl = `https://xat.com/web_gear/chat/av/${parts[0]}.png`;
+                } else if (parts[0].startsWith('http')) {
+                    realUrl = parts[0];
+                } else {
+                    realUrl = "https://xat.com/web_gear/chat/av/0.png";
+                }
+                
+                avatarImg.setAttribute('data-avatar', realUrl);
+                showAvatar();
+            }
+        }
+
+        function fetchProfile() {
+            fetch('https://pythbots.com/api/userinfo.php?user=nicholas')
+                .then(r => r.json())
+                .then(updateProfileFromAPI)
+                .catch(() => {
+                    const statusIndicator = document.getElementById('statusIndicator');
+                    statusIndicator.classList.add('offline');
+                    statusIndicator.classList.remove('online');
+                });
+        }
+    </script>
+</body>
+</html>
