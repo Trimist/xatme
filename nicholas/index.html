@@ -40,7 +40,6 @@
         <aside class='avatar' id="avatar-container">
             <img id="avatar-img" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Avatar" data-avatar="https://xat.com/web_gear/chat/av/0.png" style="display:block;">
             <canvas id="avatar-canvas" width="200" height="200" style="display:none;"></canvas>
-            <div class="status-indicator" id="statusIndicator"></div>
         </aside>
         <section class='info'>
             <h1>Nicholas (10010101)</h1>
@@ -53,14 +52,6 @@
                             <path d='M42.5,7 L42.5,78 M7,42.5 L78,42.5 M20,20 L65,65 M65,20 L20,65 M42.5,7 C23.5,7 7,23.5 7,42.5 C7,61.5 23.5,78 42.5,78 C61.5,78 78,61.5 78,42.5 C78,23.5 61.5,7 42.5,7 Z'></path>
                         </svg>
                         <span>Nick</span>
-                    </a>
-                </li>
-                <li>
-                    <a class='link chat-assistance' href='https://xat.com/Assistance' target='_blank'>
-                        <svg viewbox='0 0 85 85'>
-                            <path d='M42.5,15 L42.5,70 M15,42.5 L70,42.5 M42.5,7 C23.5,7 7,23.5 7,42.5 C7,61.5 23.5,78 42.5,78 C61.5,78 78,61.5 78,42.5 C78,23.5 61.5,7 42.5,7 Z M30,30 L55,30 M30,42.5 L55,42.5 M30,55 L55,55'></path>
-                        </svg>
-                        <span>Assistance</span>
                     </a>
                 </li>
                 <li>
@@ -166,17 +157,7 @@
 
         // Profile API integration
         function updateProfileFromAPI(data) {
-            const statusIndicator = document.getElementById('statusIndicator');
             const avatarImg = document.getElementById('avatar-img');
-            
-            // Update status indicator
-            if (data.is_online) {
-                statusIndicator.classList.add('online');
-                statusIndicator.classList.remove('offline');
-            } else {
-                statusIndicator.classList.add('offline');
-                statusIndicator.classList.remove('online');
-            }
 
             // Update avatar image
             if (data.avatar) {
@@ -200,9 +181,6 @@
                 .then(r => r.json())
                 .then(updateProfileFromAPI)
                 .catch(() => {
-                    const statusIndicator = document.getElementById('statusIndicator');
-                    statusIndicator.classList.add('offline');
-                    statusIndicator.classList.remove('online');
                 });
         }
     </script>
