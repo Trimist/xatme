@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PythBots - Advanced Themes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gradient-1: #ffffff;
+            --gradient-2: #e0c3fc;
+            --gradient-3: #8ec5fc;
+            --glow-color: #8ec5fc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 2s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: all 2s ease;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+            box-shadow: 0 0 6px currentColor;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            5% {
+                opacity: 0.8;
+            }
+            95% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-110vh) translateX(calc(50px * sin(var(--random, 1)))) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 140px;
+            font-weight: 900;
+            text-align: center;
+            position: relative;
+            transition: all 1.5s ease;
+            letter-spacing: -2px;
+            background: linear-gradient(45deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: logoFloat 6s ease-in-out infinite, gradientShift 8s ease infinite;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+            }
+            50% {
+                transform: translateY(-25px) scale(1.02);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 3s infinite ease-in-out;
+            box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            25% {
+                opacity: 1;
+                transform: scale(1) rotate(90deg);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.2) rotate(180deg);
+            }
+            75% {
+                opacity: 1;
+                transform: scale(1) rotate(270deg);
+            }
+        }
+
+        .waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background-repeat: repeat-x;
+            animation: wave 20s linear infinite;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .theme-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 16px 28px;
+            border-radius: 100px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-indicator:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 20px;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: fireworkExplode 1s ease-out forwards;
+        }
+
+        @keyframes fireworkExplode {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: heartFloat 8s linear infinite;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .ghost {
+            position: absolute;
+            font-size: 40px;
+            animation: ghostFloat 10s ease-in-out infinite;
+        }
+
+        @keyframes ghostFloat {
+            0%, 100% {
+                transform: translateX(0) translateY(0);
+            }
+            25% {
+                transform: translateX(50px) translateY(-30px);
+            }
+            75% {
+                transform: translateX(-50px) translateY(30px);
+            }
+        }
+
+        .shamrock {
+            position: absolute;
+            font-size: 25px;
+            animation: shamrockSpin 6s linear infinite;
+        }
+
+        @keyframes shamrockSpin {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            to {
+                transform: translateY(-100px) rotate(720deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="particles" id="particles"></div>
+        <div class="waves" id="waves"></div>
+        <div class="sparkles" id="sparkles"></div>
+    </div>
+    
+    <div class="logo-container">
+        <div class="logo" id="logo">PythBots</div>
+    </div>
+
+    <div class="theme-indicator" id="themeIndicator"></div>
+
+    <script>
+        const themes = [
+            // Holiday Themes
+            {
+                name: "Christmas Magic",
+                bg: "linear-gradient(135deg, #1a472a 0%, #2d5f3f 25%, #8b0000 75%, #ff0000 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffebee",
+                gradient3: "#ff6b6b",
+                glow: "#ff4444",
+                particle: "#ffffff",
+                holiday: "christmas"
+            },
+            {
+                name: "New Year Celebration",
+                bg: "linear-gradient(135deg, #000428 0%, #004e92 50%, #ffd700 100%)",
+                gradient1: "#ffd700",
+                gradient2: "#ffffff",
+                gradient3: "#87ceeb",
+                glow: "#ffd700",
+                particle: "#ffd700",
+                holiday: "newyear"
+            },
+            {
+                name: "Valentine's Love",
+                bg: "linear-gradient(135deg, #ff6b9d 0%, #c06c84 50%, #6c5b7b 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffb3d9",
+                gradient3: "#ff69b4",
+                glow: "#ff69b4",
+                particle: "#ff69b4",
+                holiday: "valentine"
+            },
+            {
+                name: "St. Patrick's Day",
+                bg: "linear-gradient(135deg, #0f5132 0%, #198754 50%, #90ee90 100%)",
+                gradient1: "#ffd700",
+                gradient2: "#90ee90",
+                gradient3: "#00ff00",
+                glow: "#00ff00",
+                particle: "#00ff00",
+                holiday: "stpatrick"
+            },
+            {
+                name: "Easter Spring",
+                bg: "linear-gradient(135deg, #ffeaa7 0%, #fab1a0 33%, #a29bfe 66%, #fd79a8 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffd1dc",
+                gradient3: "#c39bd3",
+                glow: "#c39bd3",
+                particle: "#ffffff",
+                holiday: "easter"
+            },
+            {
+                name: "Independence Day",
+                bg: "linear-gradient(135deg, #1e3a8a 0%, #dc2626 50%, #ffffff 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ff6b6b",
+                gradient3: "#4169e1",
+                glow: "#ff0000",
+                particle: "#ffd700",
+                holiday: "july4"
+            },
+            {
+                name: "Halloween Spooky",
+                bg: "linear-gradient(135deg, #1a0b2e 0%, #5a189a 33%, #ff6d00 66%, #000000 100%)",
+                gradient1: "#ff6d00",
+                gradient2: "#ffa500",
+                gradient3: "#9d4edd",
+                glow: "#ff6d00",
+                particle: "#ff6d00",
+                holiday: "halloween"
+            },
+            {
+                name: "Thanksgiving Harvest",
+                bg: "linear-gradient(135deg, #8b4513 0%, #d2691e 33%, #ffa500 66%, #ff8c00 100%)",
+                gradient1: "#ffd700",
+                gradient2: "#ffa500",
+                gradient3: "#ff6347",
+                glow: "#ffa500",
+                particle: "#ffd700",
+                holiday: "thanksgiving"
+            },
+            
+            // Regular Themes
+            {
+                name: "Ocean Deep",
+                bg: "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#e0c3fc",
+                gradient3: "#8ec5fc",
+                glow: "#8ec5fc",
+                particle: "#ffffff"
+            },
+            {
+                name: "Sunset Vibes",
+                bg: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffd89b",
+                gradient3: "#ff9a9e",
+                glow: "#ffd89b",
+                particle: "#ffffff"
+            },
+            {
+                name: "Northern Lights",
+                bg: "linear-gradient(135deg, #00c6ff 0%, #0072ff 50%, #00ff88 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#a8edea",
+                gradient3: "#fed6e3",
+                glow: "#00ff88",
+                particle: "#00ff88"
+            },
+            {
+                name: "Purple Haze",
+                bg: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#e0c3fc",
+                gradient3: "#8ec5fc",
+                glow: "#8ec5fc",
+                particle: "#ffffff"
+            },
+            {
+                name: "Fire & Ice",
+                bg: "linear-gradient(135deg, #ff0844 0%, #ffb199 50%, #00f2fe 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffd1d1",
+                gradient3: "#a8edea",
+                glow: "#00f2fe",
+                particle: "#ffffff"
+            },
+            {
+                name: "Emerald Dream",
+                bg: "linear-gradient(135deg, #134e5e 0%, #71b280 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#b2fefa",
+                gradient3: "#0ed2f7",
+                glow: "#0ed2f7",
+                particle: "#ffffff"
+            },
+            {
+                name: "Neon Nights",
+                bg: "linear-gradient(135deg, #f953c6 0%, #b91d73 50%, #1a0033 100%)",
+                gradient1: "#00ffff",
+                gradient2: "#ff00ff",
+                gradient3: "#ffffff",
+                glow: "#00ffff",
+                particle: "#00ffff"
+            },
+            {
+                name: "Golden Hour",
+                bg: "linear-gradient(135deg, #fc6076 0%, #ff9a44 50%, #ffd700 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffd89b",
+                gradient3: "#fec163",
+                glow: "#ffd700",
+                particle: "#ffffff"
+            },
+            {
+                name: "Cosmic Voyage",
+                bg: "linear-gradient(135deg, #141e30 0%, #243b55 50%, #4a00e0 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#c3cfe2",
+                gradient3: "#667eea",
+                glow: "#667eea",
+                particle: "#ffffff"
+            },
+            {
+                name: "Tropical Paradise",
+                bg: "linear-gradient(135deg, #06beb6 0%, #48b1bf 50%, #2affff 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#a8edea",
+                gradient3: "#fed6e3",
+                glow: "#2affff",
+                particle: "#ffffff"
+            },
+            {
+                name: "Cherry Blossom",
+                bg: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%)",
+                gradient1: "#8b0050",
+                gradient2: "#ff6b9d",
+                gradient3: "#c06c84",
+                glow: "#ff69b4",
+                particle: "#ff69b4"
+            },
+            {
+                name: "Midnight Blue",
+                bg: "linear-gradient(135deg, #000000 0%, #0f2027 33%, #203a43 66%, #2c5364 100%)",
+                gradient1: "#00d4ff",
+                gradient2: "#90e0ef",
+                gradient3: "#caf0f8",
+                glow: "#00d4ff",
+                particle: "#00d4ff"
+            },
+            {
+                name: "Rainbow Dreams",
+                bg: "linear-gradient(135deg, #ff0000 0%, #ff7f00 16%, #ffff00 33%, #00ff00 50%, #0000ff 66%, #4b0082 83%, #9400d3 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffd1dc",
+                gradient3: "#e0c3fc",
+                glow: "#ffffff",
+                particle: "#ffffff"
+            },
+            {
+                name: "Matrix Code",
+                bg: "linear-gradient(135deg, #000000 0%, #003300 50%, #00ff00 100%)",
+                gradient1: "#00ff00",
+                gradient2: "#7fff00",
+                gradient3: "#adff2f",
+                glow: "#00ff00",
+                particle: "#00ff00"
+            },
+            {
+                name: "Royal Purple",
+                bg: "linear-gradient(135deg, #360033 0%, #0b8793 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#e0c3fc",
+                gradient3: "#a8edea",
+                glow: "#e0c3fc",
+                particle: "#ffffff"
+            },
+            {
+                name: "Cyber Pink",
+                bg: "linear-gradient(135deg, #f54ea2 0%, #ff7676 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffd1dc",
+                gradient3: "#ff9ec4",
+                glow: "#ff7676",
+                particle: "#ffffff"
+            },
+            {
+                name: "Arctic Frost",
+                bg: "linear-gradient(135deg, #e0f7fa 0%, #80deea 33%, #4dd0e1 66%, #0097a7 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#e1f5fe",
+                gradient3: "#b3e5fc",
+                glow: "#4dd0e1",
+                particle: "#ffffff"
+            },
+            {
+                name: "Desert Sunset",
+                bg: "linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%)",
+                gradient1: "#ffffff",
+                gradient2: "#ffd1d1",
+                gradient3: "#a8edea",
+                glow: "#ff6e7f",
+                particle: "#ffffff"
+            }
+        ];
+
+        function getThemeIndex() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const themeParam = urlParams.get('t');
+            
+            if (themeParam === 'c') {
+                return 0; // Christmas
+            } else if (themeParam === 'n') {
+                return 1; // New Year
+            } else if (themeParam && !isNaN(themeParam)) {
+                const index = parseInt(themeParam) - 1;
+                return index >= 0 && index < themes.length ? index : getDateBasedTheme();
+            }
+            
+            return getDateBasedTheme();
+        }
+
+        function getDateBasedTheme() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            
+            // Christmas (Dec 1 - Dec 25)
+            if (month === 12 && day >= 1 && day <= 25) {
+                return 0;
+            }
+            
+            // New Year (Dec 26 - Jan 2)
+            if ((month === 12 && day >= 26) || (month === 1 && day <= 2)) {
+                return 1;
+            }
+            
+            // Valentine's Day (Feb 10-15)
+            if (month === 2 && day >= 10 && day <= 15) {
+                return 2;
+            }
+            
+            // St. Patrick's Day (Mar 14-18)
+            if (month === 3 && day >= 14 && day <= 18) {
+                return 3;
+            }
+            
+            // Easter (around early April)
+            if (month === 4 && day >= 15 && day <= 21) {
+                return 4;
+            }
+            
+            // July 4th (Jul 1-5)
+            if (month === 7 && day >= 1 && day <= 5) {
+                return 5;
+            }
+            
+            // Halloween (Oct 25 - Nov 1)
+            if ((month === 10 && day >= 25) || (month === 11 && day === 1)) {
+                return 6;
+            }
+            
+            // Thanksgiving (Nov 20-28)
+            if (month === 11 && day >= 20 && day <= 28) {
+                return 7;
+            }
+            
+            // Regular themes - rotate based on day of year
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            
+            return 8 + (dayOfYear % 17); // Rotate through remaining 17 themes
+        }
+
+        function createParticles(color, count = 60) {
+            const container = document.getElementById('particles');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.background = color;
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 15) + 's';
+                particle.style.width = (3 + Math.random() * 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.opacity = 0.3 + Math.random() * 0.5;
+                container.appendChild(particle);
+            }
+        }
+
+        function createSparkles(color) {
+            const container = document.getElementById('sparkles');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 25; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.background = color;
+                sparkle.style.color = color;
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+
+        function createSnowflakes() {
+            const container = document.getElementById('particles');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.fontSize = (10 + Math.random() * 20) + 'px';
+                snowflake.style.animationDuration = (5 + Math.random() * 10) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(snowflake);
+            }
+        }
+
+        function createFireworks() {
+            setInterval(() => {
+                const container = document.getElementById('particles');
+                const colors = ['#ffd700', '#ff0000', '#00ff00', '#0000ff', '#ff00ff', '#00ffff', '#ffffff'];
+                
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * (window.innerHeight * 0.6);
+                
+                for (let i = 0; i < 30; i++) {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = x + 'px';
+                    firework.style.top = y + 'px';
+                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const angle = (Math.PI * 2 * i) / 30;
+                    const velocity = 50 + Math.random() * 100;
+                    firework.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+                    firework.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+                    
+                    container.appendChild(firework);
+                    setTimeout(() => firework.remove(), 1000);
+                }
+            }, 2000);
+        }
+
+        function createHearts() {
+            const container = document.getElementById('particles');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 8 + 's';
+                heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        function createGhosts() {
+            const container = document.getElementById('particles');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 10; i++) {
+                const ghost = document.createElement('div');
+                ghost.className = 'ghost';
+                ghost.innerHTML = '👻';
+                ghost.style.left = Math.random() * 100 + '%';
+                ghost.style.top = Math.random() * 100 + '%';
+                ghost.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(ghost);
+            }
+        }
+
+        function createShamrocks() {
+            const container = document.getElementById('particles');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 15; i++) {
+                const shamrock = document.createElement('div');
+                shamrock.className = 'shamrock';
+                shamrock.innerHTML = '☘';
+                shamrock.style.left = Math.random() * 100 + '%';
+                shamrock.style.animationDelay = Math.random() * 6 + 's';
+                shamrock.style.animationDuration = (4 + Math.random() * 4) + 's';
+                container.appendChild(shamrock);
+            }
+        }
+
+        function applyTheme(index) {
+            const theme = themes[index];
+            const bg = document.querySelector('.background');
+            const logo = document.getElementById('logo');
+            const indicator = document.getElementById('themeIndicator');
+            
+            // Set background
+            bg.style.background = theme.bg;
+            
+            // Set CSS variables for gradients
+            document.documentElement.style.setProperty('--gradient-1', theme.gradient1);
+            document.documentElement.style.setProperty('--gradient-2', theme.gradient2);
+            document.documentElement.style.setProperty('--gradient-3', theme.gradient3);
+            document.documentElement.style.setProperty('--glow-color', theme.glow);
+            
+            // Update indicator
+            indicator.textContent = `Theme: ${theme.name}`;
+            indicator.style.color = theme.gradient1;
+            
+            // Apply holiday-specific effects
+            if (theme.holiday === 'christmas') {
+                createSnowflakes();
+                createSparkles(theme.particle);
+            } else if (theme.holiday === 'newyear') {
+                createFireworks();
+            } else if (theme.holiday === 'valentine') {
+                createHearts();
+            } else if (theme.holiday === 'halloween') {
+                createGhosts();
+            } else if (theme.holiday === 'stpatrick') {
+                createShamrocks();
+            } else {
+                createParticles(theme.particle);
+                createSparkles(theme.particle);
+            }
+        }
+
+        // Initialize
+        const currentTheme = getThemeIndex();
+        applyTheme(currentTheme);
+
+        // Auto-rotate theme every 24 hours for non-holiday themes
+        setInterval(() => {
+            const newTheme = getDateBasedTheme();
+            applyTheme(newTheme);
+        }, 86400000); // 24 hours
+    </script>
+</body>
+</html>
