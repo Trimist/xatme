@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leena</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Patrick+Hand&family:Caveat:wght@400;700&display=swap');
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    html, body { 
+      width:100%; 
+      height:100%; 
+      overflow:hidden; 
+      font-family: 'Patrick Hand', cursive;
+    }
+
+    :root{
+      --sky: #e0f2fe;
+      --blue: #38bdf8;
+      --gojo-blue: #60a5fa;
+      --deep-blue: #3b82f6;
+      --pink: #fbcfe8;
+      --hot-pink: #f9a8d4;
+      --purple: #c4b5fd;
+      --white: #ffffff;
+    }
+
+    body { 
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(251, 207, 232, 0.3), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(196, 181, 253, 0.3), transparent 50%),
+        linear-gradient(135deg, #e0f2fe 0%, #ddd6fe 50%, #fbcfe8 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+    }
+
+    /* Hide default cursor for all elements */
+    * {
+      cursor: none !important;
+    }
+
+    /* Custom animated cursor */
+    .custom-cursor {
+      position: fixed;
+      width: 32px;
+      height: 32px;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+
+    .custom-cursor img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Pink scrollbar */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(251, 207, 232, 0.2);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #f9a8d4, #fbcfe8);
+      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #ec4899, #f9a8d4);
+    }
+
+    /* Firefox scrollbar */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #f9a8d4 rgba(251, 207, 232, 0.2);
+    }
+
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      animation: float 3s ease-in-out infinite;
+      opacity: 0.6;
+      font-size: 20px;
+      z-index: 1;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #e0f2fe 0%, #ddd6fe 50%, #fbcfe8 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-text {
+      margin-top: 100px;
+      font-size: 24px;
+      color: #3b82f6;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .eye {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(2, 2);
+      width: 30vw;
+      height: 13vw;
+      background: radial-gradient(ellipse at 30% 40%, rgba(224, 242, 254, 1) 0, rgba(189, 224, 254, 1) 70%, rgba(189, 224, 254, 1) 100%);
+      overflow: hidden;
+      border: solid 0.02vw rgba(59, 130, 246, 0.3);
+      border-top: solid 0.7vw rgb(59, 130, 246);
+      box-shadow: inset 0.1vw -0.1vw 3vw 0px rgba(96, 165, 250, 0.5), inset -0.1vw 0.1vw 2vw 0px rgba(96, 165, 250, 1);
+      border-radius: 100% 100% 90% 100%/100% 70% 130% 70%;
+      clip-path: polygon(17% 0, 100% 0%, 100% 100%, 0% 100%);
+      animation: eye-shadow 10s ease-in-out infinite;
+    }
+
+    @keyframes eye-shadow {
+      0%, 25%, 50%, 100% { box-shadow: inset 0.1vw -0.1vw 3vw 0px rgba(96, 165, 250, 0.5), inset -0.1vw 0.1vw 2vw 0px rgba(96, 165, 250, 1); }
+      75% { box-shadow: inset 10vw -0.1vw 3vw 0px rgba(96, 165, 250, 0.5), inset -0.1vw 0.1vw 2vw 0px rgba(96, 165, 250, 1); }
+    }
+
+    .eye-shadow-inside { position: absolute; top: 0%; left: 0%; transform: translate(1%, -2%) scale(1, 1); width: 30vw; height: 13vw; border-radius: 100% 100% 90% 100%/100% 70% 130% 70%; box-shadow: inset -0.8vw 1vw 1vw 0px rgba(59, 130, 246, 0.4); z-index: 10; }
+    .eye-lids { position: absolute; top: 0%; left: 11.7%; clip-path: polygon(0% 100%, 0% 0%, 45% 0%); transform: rotatez(19deg); width: 3.5vw; height: 7vw; background: rgb(59, 130, 246); z-index: 300; }
+
+    .eye-ball {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-40%, -70%);
+      width: 15vw;
+      height: 15vw;
+      overflow: hidden;
+      background: #fcfffb;
+      border-radius: 50%;
+      box-shadow: 0.2vw -0.2vw 0px #3b82f6, -0.25vw -0.05vw 0px #3b82f6, -0.2vw 0.2vw 0px #3b82f6, -0.25vw 0.05vw 0px #3b82f6, inset 2vw 0.5vw 4vw 1vw white, inset 2vw 0 3vw #60a5fa, inset -1vw 1.6vw 3vw #38bdf8, inset 0px 9vw 1vw #bae6fd, inset 0px -2vw 3vw #38bdf8, 0.1vw 0.1vw 0.5vw 0px rgba(96, 165, 250, 0.8);
+      animation: eyeball-move 10s ease-in-out infinite, eyeball-side 10s ease-in-out infinite;
+    }
+
+    @keyframes eyeball-move {
+      12.5% { box-shadow: 0.2vw -0.2vw 0 #3b82f6, -0vw -0vw 0px rgba(59, 130, 246, 0.1), -0vw 0vw 0px rgba(59, 130, 246, 0.1), -0vw 0vw 0px rgba(59, 130, 246, 0.1), inset 2vw 0.5vw 2vw 1vw rgba(255, 255, 255, 0.5), inset 0vw -2vw 4vw white, inset 2vw 0 3vw #60a5fa, inset -1vw 1.6vw 3vw #38bdf8, inset 0px 9vw 1vw #bae6fd, inset 0px -2vw 3vw #38bdf8, 0.1vw 0.1vw 0.5vw 0px rgba(96, 165, 250, 0.8); }
+      25% { transform: translate(-80%, -68%) rotatey(30deg) rotatez(-2deg); box-shadow: 0.2vw -0.2vw 0px #3b82f6, -0vw -0vw 0px rgba(59, 130, 246, 0), -0vw 0vw 0px rgba(59, 130, 246, 0), -0vw 0vw 0px rgba(59, 130, 246, 0), inset 2vw 0.5vw 2vw 1vw rgba(255, 255, 255), inset 0vw 0 4vw 4vw rgba(255, 255, 255, 0.8), inset 0vw 0 3vw 2vw #60a5fa, inset -1vw 1.6vw 3vw #38bdf8, inset 0px 9vw 1vw #bae6fd, inset 0px -0.5vw 3vw #38bdf8, 0.1vw 0.1vw 0.5vw 0px rgba(96, 165, 250, 0.8), inset 2vw 0.5vw 1vw 10vw rgb(255, 255, 255); scale: 0.95 1; }
+      0%, 50%, 100% { transform: translate(-40%, -70%) rotatey(0deg) rotatez(0deg); box-shadow: 0.2vw -0.2vw 0px #3b82f6, -0.25vw -0.05vw 0px #3b82f6, -0.2vw 0.2vw 0px #3b82f6, -0.25vw 0.05vw 0px #3b82f6, inset 2vw 0.5vw 4vw 1vw rgba(255, 255, 255, 0), inset 2vw 0.5vw 4vw 1vw white, inset 2vw 0 3vw #60a5fa, inset -1vw 1.6vw 3vw #38bdf8, inset 0px 9vw 1vw #bae6fd, inset 0px -2vw 3vw #38bdf8, 0.1vw 0.1vw 0.5vw 0px rgba(96, 165, 250, 0.8); scale: 1 1; }
+      62.5% { box-shadow: 0vw -0vw 0px rgba(59, 130, 246, 0.3), -0.25vw -0.05vw 0px #3b82f6, -0.2vw 0.2vw 0px #3b82f6, -0.25vw 0.05vw 0px #3b82f6, inset 2vw 0.5vw 4vw 1vw rgba(255, 255, 255, 0), inset 0 -2vw 4vw white, inset 0 -2vw 2vw #60a5fa, inset -1vw 1.6vw 3vw #38bdf8, inset 0px 9vw 1vw #bae6fd, inset 0px -2vw 3vw #38bdf8, 0.1vw 0.1vw 0.5vw 0px rgba(96, 165, 250, 0.8); }
+      75% { transform: translate(0%, -68%) rotatey(-30deg) rotatez(2deg); box-shadow: 0vw -0vw 0px rgba(59, 130, 246, 0), -0.25vw -0.05vw 0px #3b82f6, -0.2vw 0.2vw 0px #3b82f6, -0.25vw 0.05vw 0px #3b82f6, inset 2vw 0.5vw 4vw 1vw rgba(255, 255, 255, 0), inset -2vw 0 2vw white, inset -2vw 0 2vw #60a5fa, inset -1vw 1.6vw 3vw #38bdf8, inset 0px 9vw 1vw #bae6fd, inset 0px -2vw 3vw #38bdf8, 0.1vw 0.1vw 0.5vw 0px rgba(96, 165, 250, 0.8); scale: 0.9 1; }
+    }
+
+    @keyframes eyeball-side {
+      0% { clip-path: ellipse(100% 100% at 50% 50%); }
+      10% { clip-path: ellipse(100% 100% at 100% 50%); }
+      25% { clip-path: ellipse(95% 70% at 100% 50%); }
+      50% { clip-path: ellipse(60% 50% at 50% 50%); }
+      75% { clip-path: ellipse(50% 50% at 40% 50%); }
+      100% { clip-path: ellipse(100% 100% at 50% 50%); }
+    }
+
+    .eye-ball-shadow { border-radius: 50%; width: 30vw; height: 30vw; transform: translate(-7.5vw, 0%) scale(0.65, 1); background: url("https://raw.githubusercontent.com/siddnlw/codepen-assets/main/img/clouds.png"); background-size: 45vw 15vw; filter: grayscale(60%) brightness(1.2) invert(1); mix-blend-mode: difference; background-position: -7.5vw 0px; animation: eyeball-shadow-move-x 10s ease-in-out infinite, eyeball-shadow-move-y 60s linear infinite; }
+    
+    @keyframes eyeball-shadow-move-x {
+      from, to { background-position-x: -7.5vw; }
+      25% { background-position-x: 0px; }
+      50% { background-position-x: -7.5vw; }
+      75% { background-position-x: -15vw; }
+    }
+
+    @keyframes eyeball-shadow-move-y {
+      from { background-position-y: -15vw; }
+      to { background-position-y: 0px; }
+    }
+
+    .I-ris { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 3vw; height: 3vw; opacity: 0.8; box-shadow: inset 0 0 0 0.15vw rgb(186, 230, 253), 0.05vw 0.1vw 0 0.01vw rgb(59, 130, 246), -0.01vw 0px 0 0.01vw rgb(186, 230, 253), 0px 0px 0 0.1vw rgb(186, 230, 253), 0px -0.15vw 0 0.01vw rgb(59, 130, 246), 0px 0px 0 0.3vw rgb(186, 230, 253), 0.3vw 0.2vw 0 0.02vw rgb(59, 130, 246), 0 0 2vw 2vw rgba(96, 165, 250, 0.3), 0 0 3vw 1vw rgba(56, 189, 248, 0.3); background: rgb(30, 64, 175); border-radius: 50%; }
+    
+    .iris-lines { position: absolute; top: 50%; left: 50%; width: 2vw; height: 1vw; opacity: 0.5; border: solid 0.1px #1e40af; border-color: #1e40af transparent transparent transparent; transform: translate(-100%, -50%) rotatez(0deg); rotate: 0deg; }
+    .iris-lines:nth-child(2) { transform: translate(150%, -50%) rotatez(-10deg); rotate: -5deg; }
+    .iris-lines:nth-child(3) { transform: translate(130%, -165%) rotatez(10deg); rotate: 5deg; border-color: transparent transparent #1e40af transparent; }
+    .iris-lines:nth-child(4) { transform: translate(160%, -100%) rotatez(-10deg); width: 2.2vw; border-radius: 50%/0.25vw 0.25vw 0 0; }
+    .iris-lines:nth-child(5) { transform: translate(200%, -50%) rotatez(-0deg); rotate: 20deg; width: 1.5vw; }
+    .iris-lines:nth-child(6) { transform: translate(150%, -50%) rotatez(-15deg); rotate: 45deg; }
+    .iris-lines:nth-child(7) { transform: translate(140%, -50%) rotatez(-15deg); rotate: 61deg; width: 2.2vw; }
+    .iris-lines:nth-child(8) { transform: translate(160%, -50%) rotatez(-15deg); rotate: 75deg; width: 1.8vw; }
+    .iris-lines:nth-child(9) { transform: translate(160%, -50%) rotatez(-35deg); rotate: 90deg; }
+    .iris-lines:nth-child(10) { transform: translate(165%, -50%) rotatez(-10deg); rotate: 100deg; width: 1.7vw; }
+    .iris-lines:nth-child(11) { transform: translate(145%, -50%) rotatez(-30deg); rotate: 115deg; width: 2.4vw; }
+    .iris-lines:nth-child(12) { transform: translate(185%, -50%) rotatez(-30deg); rotate: 140deg; }
+    .iris-lines:nth-child(13) { transform: translate(210%, -50%) rotatez(-30deg); rotate: 145deg; width: 1.7vw; }
+    .iris-lines:nth-child(14) { transform: translate(205%, -50%) rotatez(-30deg); rotate: 162deg; width: 2.2vw; }
+    .iris-lines:nth-child(15) { transform: translate(255%, -50%) rotatez(-35deg); rotate: 170deg; width: 1.7vw; }
+    .iris-lines:nth-child(16) { transform: translate(250%, -50%) rotatez(-15deg); rotate: 175deg; width: 1.7vw; }
+    .iris-lines:nth-child(17) { transform: translate(245%, -50%) rotatez(-20deg); rotate: 210deg; }
+    .iris-lines:nth-child(18) { transform: translate(270%, -50%) rotatez(-30deg); rotate: 220deg; width: 1.7vw; }
+    .iris-lines:nth-child(19) { transform: translate(265%, -50%) rotatez(-10deg); rotate: 225deg; width: 1.7vw; }
+    .iris-lines:nth-child(20) { transform: translate(245%, -50%) rotatez(-10deg); rotate: 230deg; width: 1.7vw; }
+    .iris-lines:nth-child(21) { transform: translate(225%, -50%) rotatez(-5deg); rotate: 245deg; }
+    .iris-lines:nth-child(22) { transform: translate(225%, -50%) rotatez(-5deg); rotate: 270deg; width: 1.7vw; }
+    .iris-lines:nth-child(23) { transform: translate(165%, -50%) rotatez(5deg); rotate: 300deg; }
+    .iris-lines:nth-child(24) { transform: translate(165%, -50%) rotatez(-10deg); rotate: 320deg; }
+    .iris-lines:nth-child(25) { transform: translate(370%, -13%) rotatez(10deg); rotate: 325deg; width: 0.7vw; }
+    .iris-lines:nth-child(26) { transform: translate(150%, -13%) rotatez(0deg); rotate: 340deg; }
+
+    .eye-glare { position: absolute; top: 50%; left: 50%; transform: translate(-180%, -240%); width: 5vw; height: 1vw; border-radius: 50%; box-shadow: 0 0 1vw 1vw white, -2vw 0 3vw 2vw #bae6fd; filter: blur(1px); background: white; z-index: 200; }
+    .eye-caruncle { position: absolute; bottom: 1.5vw; left: -1vw; transform: rotatez(65deg); width: 4vw; height: 2vw; box-shadow: 0 0 5vw 0.3vw #f9a8d4; background: #f9a8d4; overflow: hidden; animation: eye-caruncle-move 10s ease-in-out infinite; }
+    
+    @keyframes eye-caruncle-move {
+      from, 50%, to { box-shadow: 0 0 5vw 0.3vw #f9a8d4; }
+      75% { box-shadow: 0 0 5vw 1vw #f9a8d4; }
+    }
+
+    .eye-caruncle::before { content: ""; position: absolute; top: 0%; left: 40%; width: 0.5vw; height: 0.5vw; filter: blur(0.2vw); border-radius: 50%; background: white; }
+    .eye-lash-up { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -200%) scale(2, 2.5); width: 30vw; height: 13vw; clip-path: polygon(0% 98%, 10% 71%, 3% 53%, 17% 69%, 16% 43%, 26% 63%, 30% 43%, 34% 61%, 40% 41%, 41% 59%, 47% 42%, 48% 61%, 55% 40%, 56% 60%, 63% 40%, 65% 60%, 72% 42%, 73% 61%, 79% 45%, 81% 61%, 86% 47%, 88% 66%, 93% 47%, 96% 65%, 14% 79%, 13% 80%); }
+    .eye-lash-down { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(2, 2.5); width: 30vw; height: 13vw; border-radius: 100% 100% 90% 100%/100% 70% 130% 70%; z-index: -1; }
+
+    .profile { display: none; position: fixed; inset: 0; align-items: center; justify-content: center; padding: 20px; }
+    .profile.active { display: flex; animation: fadeIn 0.5s ease; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .profile-card { background: white; border-radius: 30px; padding: 40px 50px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 20px 60px rgba(96, 165, 250, 0.2); max-width: 520px; width: 100%; border: 6px solid #f8fafc; position: relative; transform: rotate(-0.5deg); }
+    .profile-card::before { content: '✧'; position: absolute; top: -20px; right: -20px; font-size: 35px; animation: twinkle 2s ease-in-out infinite; }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+      50% { opacity: 0.5; transform: scale(1.2) rotate(180deg); }
+    }
+
+    .profile-content { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
+    .avatar-wrapper { position: relative; }
+    .avatar { width: 150px; height: 150px; border-radius: 50%; border: 5px solid white; box-shadow: 0 0 0 4px #60a5fa, 0 0 30px rgba(96, 165, 250, 0.5), 0 10px 40px rgba(0, 0, 0, 0.1); overflow: hidden; background: linear-gradient(135deg, #e0f2fe, #ddd6fe); position: relative; }
+    .avatar img, .avatar canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+    #avatar-canvas { display: none; }
+
+    .name { font-family: 'Caveat', cursive; font-size: 52px; font-weight: 700; background: linear-gradient(135deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 5px; line-height: 1.2; }
+    .username { font-size: 20px; color: #94a3b8; margin-bottom: 15px; font-family: 'Patrick Hand', cursive; }
+    .bio { background: linear-gradient(135deg, rgba(224, 242, 254, 0.5), rgba(251, 207, 232, 0.5)); padding: 20px 25px; border-radius: 20px; border: 2px dashed #60a5fa; color: #475569; line-height: 1.7; font-size: 17px; position: relative; width: 100%; }
+    .bio::before { content: '♡'; position: absolute; top: -15px; left: 25px; background: white; padding: 0 10px; color: #f9a8d4; font-size: 22px; }
+    .chat-btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #60a5fa, #c084fc); color: white; padding: 18px 35px; border-radius: 30px; text-decoration: none; font-size: 22px; font-family: 'Caveat', cursive; font-weight: 700; box-shadow: 0 10px 30px rgba(96, 165, 250, 0.4); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 3px solid white; margin-top: 10px; }
+    .chat-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(96, 165, 250, 0.5); }
+
+    .friends-btn { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #60a5fa, #c084fc); color: white; border: 4px solid white; box-shadow: 0 10px 30px rgba(96, 165, 250, 0.4); display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; z-index: 100; }
+    .friends-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 15px 40px rgba(96, 165, 250, 0.5); }
+    .friends-count { position: absolute; top: -5px; right: -5px; background: #f9a8d4; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; border: 3px solid white; font-family: 'Patrick Hand', cursive; }
+
+    /* Music control button */
+    .music-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f9a8d4, #fbcfe8);
+      color: white;
+      border: 4px solid white;
+      box-shadow: 0 10px 30px rgba(249, 168, 212, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      z-index: 100;
+    }
+
+    .music-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(249, 168, 212, 0.5);
+    }
+
+    .music-btn.muted {
+      opacity: 0.5;
+    }
+
+    .friends-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; animation: fadeIn 0.3s ease; }
+    .friends-modal.active { display: flex; }
+    .friends-content { background: white; border-radius: 30px; padding: 35px; max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); border: 5px solid #f8fafc; position: relative; animation: slideUp 0.3s ease; }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .friends-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid #fbcfe8; }
+    .friends-title { font-family: 'Caveat', cursive; font-size: 38px; font-weight: 700; background: linear-gradient(135deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .close-btn { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, rgba(224, 242, 254, 0.5), rgba(251, 207, 232, 0.5)); border: 2px solid #60a5fa; color: #3b82f6; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s ease; }
+    .close-btn:hover { transform: rotate(90deg); background: linear-gradient(135deg, #60a5fa, #c084fc); color: white; }
+    .friends-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
+    .friend-card { background: linear-gradient(135deg, rgba(224, 242, 254, 0.3), rgba(221, 214, 254, 0.3)); border-radius: 20px; padding: 20px; text-align: center; border: 2px solid #e0f2fe; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+    .friend-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(96, 165, 250, 0.3); border-color: #60a5fa; }
+    .friend-avatar { width: 90px; height: 90px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px #60a5fa, 0 5px 15px rgba(96, 165, 250, 0.3); margin: 0 auto 12px; overflow: hidden; background: linear-gradient(135deg, #e0f2fe, #ddd6fe); position: relative; }
+    .friend-avatar img, .friend-avatar canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .friend-avatar canvas { display: none; }
+    .friend-name { font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: #3b82f6; margin-bottom: 5px; }
+    .friend-username { font-size: 14px; color: #94a3b8; }
+    .loading-friends { text-align: center; padding: 40px; color: #94a3b8; font-size: 18px; }
+
+    @media (max-width: 768px) {
+      .friends-btn { width: 60px; height: 60px; font-size: 24px; bottom: 20px; right: 20px; }
+      .friends-count { width: 24px; height: 24px; font-size: 12px; }
+      .music-btn { width: 50px; height: 50px; font-size: 20px; bottom: 20px; left: 20px; }
+      .friends-content { padding: 25px; }
+      .friends-title { font-size: 32px; }
+      .friends-list { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+      .friend-avatar { width: 80px; height: 80px; }
+      .profile-card { padding: 30px 35px; max-width: 90%; }
+      .name { font-size: 42px; }
+      .avatar { width: 130px; height: 130px; }
+      .bio { font-size: 16px; padding: 18px 22px; }
+      .chat-btn { font-size: 20px; padding: 16px 30px; }
+      .eye { transform: translate(-50%, -50%) scale(1.5, 1.5); }
+      .eye-lash-up, .eye-lash-down { transform: translate(-50%, -200%) scale(1.5, 1.8); }
+    }
+
+    @media (max-width: 480px) {
+      .profile-card { padding: 25px 25px; }
+      .name { font-size: 38px; }
+      .avatar { width: 110px; height: 110px; }
+      .music-btn { width: 45px; height: 45px; font-size: 18px; }
+      .eye { transform: translate(-50%, -50%) scale(1.2, 1.2); }
+      .eye-lash-up, .eye-lash-down { transform: translate(-50%, -200%) scale(1.2, 1.5); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="customCursor">
+    <img src="https://i.imgur.com/SguZnn1.gif" alt="cursor">
+  </div>
+
+  <div class="sparkle" style="top:10%; left:10%;">✨</div>
+  <div class="sparkle" style="top:20%; right:15%; animation-delay:0.5s;">⭐</div>
+  <div class="sparkle" style="top:60%; left:5%; animation-delay:1s;">💫</div>
+  <div class="sparkle" style="bottom:20%; right:20%; animation-delay:1.5s;">✦</div>
+  <div class="sparkle" style="top:40%; right:10%; animation-delay:2s;">🌟</div>
+  <div class="sparkle" style="bottom:30%; left:15%; animation-delay:2.5s;">✨</div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="loading-screen" id="loadingScreen">
+    <div class="eye">
+      <div class="eye-shadow-inside"></div>
+      <div class="eye-lids"></div>
+      <div class="eye-ball">
+        <div class="eye-ball-shadow"></div>
+        <div class="I-ris"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+        <div class="iris-lines"></div>
+      </div>
+      <div class="eye-glare"></div>
+      <div class="eye-caruncle"></div>
+    </div>
+    <div class="eye-lash-up"></div>
+    <div class="eye-lash-down"></div>
+    <div class="loading-text">loading cuteness... ♡</div>
+  </div>
+
+  <main class="profile" id="profilePage">
+    <div class="profile-card">
+      <div class="profile-content">
+        <div class="avatar-wrapper">
+          <div class="avatar" id="avatar-container">
+            <img id="avatar-img" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Avatar" data-avatar="https://xat.com/web_gear/chat/av/0.png">
+            <canvas id="avatar-canvas" width="200" height="200"></canvas>
+          </div>
+        </div>
+        <div>
+          <div class="name" id="profile-name">Leena</div>
+          <div class="username">@<span id="profile-username">leena</span> ✧˖°</div>
+        </div>
+        <div class="bio"><strong>gojo enthusiast</strong> ✦ prob afk playing fortnite ✦</div>
+        <a class="chat-btn" href="https://xat.com/xat_test" target="_blank">💬 chat with me on xat5!</a>
+      </div>
+    </div>
+  </main>
+
+  <button class="friends-btn" id="friendsBtn" title="View Friends">👥<span class="friends-count" id="friendsCount">0</span></button>
+
+  <!-- Music Control Button -->
+  <button class="music-btn" id="musicBtn" title="Music Control">🎵</button>
+
+  <div class="friends-modal" id="friendsModal">
+    <div class="friends-content">
+      <div class="friends-header">
+        <div class="friends-title">My Friends ♡</div>
+        <button class="close-btn" id="closeModal">×</button>
+      </div>
+      <div class="friends-list" id="friendsList"><div class="loading-friends">Loading friends... ✨</div></div>
+    </div>
+  </div>
+
+<script>
+// Custom Cursor Animation
+const customCursor = document.getElementById('customCursor');
+
+document.addEventListener('mousemove', (e) => {
+  customCursor.style.left = e.clientX + 'px';
+  customCursor.style.top = e.clientY + 'px';
+});
+
+// Hide cursor when mouse leaves window
+document.addEventListener('mouseleave', () => {
+  customCursor.style.opacity = '0';
+});
+
+document.addEventListener('mouseenter', () => {
+  customCursor.style.opacity = '1';
+});
+
+// Background Music Auto-play
+const bgMusic = document.getElementById('bgMusic');
+let musicStarted = false;
+
+function startMusic() {
+  if (!musicStarted) {
+    bgMusic.play().catch(e => console.log('Audio play failed:', e));
+    musicStarted = true;
+  }
+}
+
+// Start music on first click anywhere
+document.addEventListener('click', startMusic, { once: true });
+
+// Also try to start after loading screen
+setTimeout(() => {
+  startMusic();
+}, 4500);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const loadingScreen = document.getElementById('loadingScreen');
+  const profilePage = document.getElementById('profilePage');
+  setTimeout(() => {
+    loadingScreen.classList.add('hidden');
+    setTimeout(() => {
+      profilePage.classList.add('active');
+      fetchProfile();
+      setInterval(fetchProfile, 30000);
+    }, 500);
+  }, 4000);
+});
+
+function isSpriteSheet(img) {
+  return img.naturalWidth > img.naturalHeight && img.naturalWidth % img.naturalHeight === 0;
+}
+
+function animateAvatar(img, canvas, timerKey) {
+  const url = img.getAttribute('data-avatar');
+  const canvasSize = canvas.width;
+  img.onload = function() {
+    if (/\.gif$/i.test(url) || (img.naturalHeight === img.naturalWidth && img.naturalHeight <= 1758 && img.naturalWidth <= 1758)) {
+      img.style.display = "block";
+      canvas.style.display = "none";
+      if (window[timerKey]) clearInterval(window[timerKey]);
+      return;
+    }
+    if (isSpriteSheet(img)) {
+      img.style.display = "none";
+      canvas.style.display = "block";
+      const frameSize = img.naturalHeight;
+      const frameCount = img.naturalWidth / frameSize;
+      let frame = 0;
+      const ctx = canvas.getContext('2d');
+      if (window[timerKey]) clearInterval(window[timerKey]);
+      function drawFrame() {
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
+        ctx.drawImage(img, frame * frameSize, 0, frameSize, frameSize, 0, 0, canvasSize, canvasSize);
+        frame = (frame + 1) % frameCount;
+      }
+      drawFrame();
+      window[timerKey] = setInterval(drawFrame, 140);
+      return;
+    }
+    img.style.display = "block";
+    canvas.style.display = "none";
+    if (window[timerKey]) clearInterval(window[timerKey]);
+  };
+  img.src = url;
+}
+
+function showAvatar() {
+  const img = document.getElementById('avatar-img');
+  const canvas = document.getElementById('avatar-canvas');
+  if (!img || !canvas) return;
+  animateAvatar(img, canvas, 'avatarTimer');
+}
+
+function parseAvatarToUrl(avatarValue) {
+  if (!avatarValue) return "https://xat.com/web_gear/chat/av/0.png";
+  const parts = String(avatarValue).split('#');
+  const first = parts[0];
+  if (/^\d+$/.test(first)) return `https://xat.com/web_gear/chat/av/${first}.png`;
+  if (first.startsWith('http')) return first;
+  return "https://xat.com/web_gear/chat/av/0.png";
+}
+
+function updateProfileFromAPI(data) {
+  const avatarImg = document.getElementById('avatar-img');
+  if (data && data.avatar) {
+    const realUrl = parseAvatarToUrl(data.avatar);
+    avatarImg.setAttribute('data-avatar', realUrl);
+    showAvatar();
+  }
+  if (data && data.name) document.getElementById('profile-name').textContent = data.name;
+  if (data && data.username) document.getElementById('profile-username').textContent = data.username;
+}
+
+function fetchProfile() {
+  fetch('https://pythbots.com/api/userinfo.php?user=leena')
+    .then(r => r.json())
+    .then(updateProfileFromAPI)
+    .catch(() => {});
+}
+
+// FRIENDS SYSTEM
+const friendsList = ['Cutest', 'chica', 'mikay', 'wolf', 'tiro', 'updog'];
+
+// Custom avatar overrides
+const customAvatars = {
+  'Cutest': 'https://i.pinimg.com/736x/88/75/a9/8875a92899e9086e08b4e6233bd819ac.jpg',
+};
+
+const friendsBtn = document.getElementById('friendsBtn');
+const friendsModal = document.getElementById('friendsModal');
+const closeModal = document.getElementById('closeModal');
+const friendsListContainer = document.getElementById('friendsList');
+const friendsCount = document.getElementById('friendsCount');
+
+// Music control
+const musicBtn = document.getElementById('musicBtn');
+musicBtn.addEventListener('click', () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    musicBtn.textContent = '🎵';
+    musicBtn.classList.remove('muted');
+  } else {
+    bgMusic.pause();
+    musicBtn.textContent = '🔇';
+    musicBtn.classList.add('muted');
+  }
+});
+
+friendsCount.textContent = friendsList.length;
+
+friendsBtn.addEventListener('click', () => {
+  friendsModal.classList.add('active');
+  loadFriends();
+});
+
+closeModal.addEventListener('click', () => {
+  friendsModal.classList.remove('active');
+});
+
+friendsModal.addEventListener('click', (e) => {
+  if (e.target === friendsModal) {
+    friendsModal.classList.remove('active');
+  }
+});
+
+function animateFriendAvatar(img, canvas, timerKey) {
+  const url = img.getAttribute('data-avatar');
+  const canvasSize = canvas.width;
+  img.onload = function() {
+    if (/\.gif$/i.test(url) || (img.naturalHeight === img.naturalWidth && img.naturalHeight <= 1758 && img.naturalWidth <= 1758)) {
+      img.style.display = "block";
+      canvas.style.display = "none";
+      if (window[timerKey]) clearInterval(window[timerKey]);
+      return;
+    }
+    if (isSpriteSheet(img)) {
+      img.style.display = "none";
+      canvas.style.display = "block";
+      const frameSize = img.naturalHeight;
+      const frameCount = img.naturalWidth / frameSize;
+      let frame = 0;
+      const ctx = canvas.getContext('2d');
+      if (window[timerKey]) clearInterval(window[timerKey]);
+      function drawFrame() {
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
+        ctx.drawImage(img, frame * frameSize, 0, frameSize, frameSize, 0, 0, canvasSize, canvasSize);
+        frame = (frame + 1) % frameCount;
+      }
+      drawFrame();
+      window[timerKey] = setInterval(drawFrame, 140);
+      return;
+    }
+    img.style.display = "block";
+    canvas.style.display = "none";
+    if (window[timerKey]) clearInterval(window[timerKey]);
+  };
+  img.src = url;
+}
+
+async function loadFriends() {
+  friendsListContainer.innerHTML = '<div class="loading-friends">Loading friends... ✨</div>';
+  try {
+    const friendsData = await Promise.all(
+      friendsList.map((username, index) =>
+        fetch(`https://pythbots.com/api/userinfo.php?user=${username}`)
+          .then(r => r.json())
+          .then(data => ({ ...data, originalUsername: username }))
+          .catch(() => ({ username, originalUsername: username, name: username, avatar: null }))
+      )
+    );
+    renderFriends(friendsData);
+  } catch (error) {
+    friendsListContainer.innerHTML = '<div class="loading-friends">Failed to load friends 💔</div>';
+  }
+}
+
+function renderFriends(friends) {
+  if (friends.length === 0) {
+    friendsListContainer.innerHTML = '<div class="loading-friends">No friends yet ✨</div>';
+    return;
+  }
+  friendsListContainer.innerHTML = friends.map((friend, index) => {
+    const username = friend.originalUsername || friend.username || 'unknown';
+    const hasCustomAvatar = customAvatars.hasOwnProperty(username);
+    const isOptedOut = friend.opted_out === true || friend.error === 'User opted out';
+    let avatarUrl;
+    if (hasCustomAvatar) {
+      avatarUrl = customAvatars[username];
+    } else if (isOptedOut) {
+      avatarUrl = 'https://xat.com/web_gear/chat/av/0.png';
+    } else {
+      avatarUrl = friend.avatar ? parseAvatarToUrl(friend.avatar) : 'https://xat.com/web_gear/chat/av/0.png';
+    }
+    const displayName = (isOptedOut || !friend.name) ? username : friend.name;
+    return `
+      <div class="friend-card" onclick="window.open('https://xat.com/${username}', '_blank')">
+        <div class="friend-avatar">
+          <img id="friend-img-${index}" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="${displayName}" data-avatar="${avatarUrl}">
+          <canvas id="friend-canvas-${index}" width="90" height="90"></canvas>
+        </div>
+        <div class="friend-name">${displayName}</div>
+        <div class="friend-username">@${username}</div>
+      </div>
+    `;
+  }).join('');
+  friends.forEach((friend, index) => {
+    const img = document.getElementById(`friend-img-${index}`);
+    const canvas = document.getElementById(`friend-canvas-${index}`);
+    if (img && canvas) {
+      animateFriendAvatar(img, canvas, `friendTimer${index}`);
+    }
+  });
+}
+</script>
+
+</body>
+</html>
